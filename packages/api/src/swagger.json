@@ -1,0 +1,49 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Document API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/documents": {
+            "get": {
+                "summary": "Get a list of documents",
+                "description": "Retrieve a list of documents with title, URL, and author ID.",
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "documents": [
+                                        {
+                                            "title": "Document 1",
+                                            "url": "http://example.com/document1",
+                                            "authorId": 123
+                                        },
+                                        {
+                                            "title": "Document 2",
+                                            "url": "http://example.com/document2",
+                                            "authorId": 456
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "description": "The number of documents to retrieve (default is 10)",
+                        "schema": {
+                            "type": "integer",
+                            "default": 10
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}
