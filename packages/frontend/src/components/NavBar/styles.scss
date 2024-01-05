@@ -1,0 +1,28 @@
+nav {
+  height: 5.3125rem;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.15);
+  .navbar {
+    height: 100%;
+    margin: auto;
+    max-width: $breakpoint-lg;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 3rem;
+    padding-left: 3rem;
+
+    img {
+      height: auto;
+      width: 10.1944rem;
+    }
+    h1 {
+      font: $font-heading-md;
+      color: $color-primary-brand;
+    }
+    ul {
+      visibility: hidden;
+      list-style: none;
+    }
+  }
+}

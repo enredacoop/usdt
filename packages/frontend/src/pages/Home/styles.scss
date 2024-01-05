@@ -1,0 +1,38 @@
+.herosection {
+  width: 100%;
+  background-color: $color-secondary-background;
+  &__wrapper {
+    width: 100%;
+    max-width: $breakpoint-lg;
+    margin: auto;
+    padding: 6.5rem 6rem;
+    display: flex;
+    flex-direction: row;
+  }
+  &__block {
+    width: 44.75rem;
+  }
+  &__img {
+    display: block;
+    margin: auto;
+    width: 26.12063rem;
+    height: 19.26275rem;
+  }
+  &__title {
+    font: $font-heading-xl;
+    color: $color-primary-brand;
+    margin-bottom: 4.23rem;
+    padding-right: 5rem;
+  }
+  &__form {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    &__card {
+      align-items: flex-start;
+      width: 31.375rem;
+      height: 28rem;
+      background-color: $color-white;
+    }
+  }
+}

@@ -1,0 +1,65 @@
+/**
+ * @file variables.scss
+ * @description Global variables for the project
+ */
+
+// Breakpoints
+$breakpoint-sm: 640px;
+$breakpoint-md: 1024px;
+$breakpoint-lg: 1920px;
+
+//  Colors
+$color-primary-brand: #00268a;
+$color-primary-footer: #e8eef4;
+$color-button-fill-hover: #445fa7;
+$color-secondary-background: #c6f0ff;
+$color-black: #000;
+$color-white: #fff;
+
+@font-face {
+  font-family: "Brygada1918";
+  src: url("@/assets/fonts/Brygada1918/Brygada1918-VariableFont_wght.woff2")
+    format("woff2");
+  font-weight: 400 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: "DM Sans";
+  src: url("@/assets/DM_Sans/DMSans-VariableFont_opsz_wght.woff2")
+    format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+$font-heading-xl:
+  700 2.5rem / normal "Brygada1918",
+  sans-serif;
+$font-heading-lg:
+  700 2.25rem / normal "Brygada1918",
+  sans-serif;
+$font-heading-md:
+  700 1.625rem / normal "Brygada1918",
+  sans-serif;
+$font-heading-sm:
+  600 1.25rem / normal "Brygada1918",
+  sans-serif;
+$font-heading-sm-2:
+  700 1.25rem / normal "DM Sans",
+  sans-serif;
+
+$font-text-lg:
+  400 1.125rem / normal "DM Sans",
+  sans-serif;
+$font-text-md:
+  400 1rem / 1.5rem "DM Sans",
+  sans-serif;
+$font-text-sm:
+  400 0.875rem / normal "DM Sans",
+  sans-serif;
+$font-text-label:
+  400 0.75rem / normal "DM Sans",
+  sans-serif;
+
+$font-text-button:
+  700 1rem / 1.5rem "DM Sans",
+  sans-serif;
