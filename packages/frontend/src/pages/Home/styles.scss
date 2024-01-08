@@ -1,3 +1,20 @@
+@mixin home-section() {
+  padding-top: 6.5rem;
+  padding-bottom: 6.5rem;
+  width: 100%;
+  & h2 {
+    text-align: center;
+    font: $font-heading-xl;
+    color: $color-primary-brand;
+    margin-bottom: 5rem;
+  }
+  &__block {
+    margin: auto;
+    width: 100%;
+    padding: 0 6rem;
+  }
+}
+
 .herosection {
   width: 100%;
   background-color: $color-secondary-background;
@@ -28,11 +45,42 @@
     flex: 1;
     display: flex;
     justify-content: flex-end;
-    &__card {
-      align-items: flex-start;
-      width: 31.375rem;
-      height: 28rem;
-      background-color: $color-white;
+  }
+}
+
+.infosection {
+  @include home-section();
+  &__block {
+    display: flex;
+    flex-direction: row;
+    max-width: $breakpoint-lg;
+    justify-content: space-between;
+    align-items: center;
+    gap: 4rem;
+  }
+  & img {
+    width: auto;
+    height: 24.5rem;
+  }
+  & p {
+    width: 100%;
+    font: $font-text-md;
+    margin-bottom: 2rem;
+  }
+}
+
+.partnerssection {
+  @include home-section();
+  &__block {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    & img {
+      width: 16.25rem;
+      height: 16.25rem;
+      border-radius: 0.625rem;
     }
   }
 }

@@ -1,4 +1,4 @@
 export interface ApiService {
   fetchUsers(): Promise<object[]>;
-  postData(data: unknown): Promise<unknown>;
+  uploadFile(data: unknown): Promise<unknown>;
 }

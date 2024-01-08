@@ -5,13 +5,19 @@ const NavBar = () => {
   return (
     <nav>
       <div className="navbar">
-        <img src="src/assets/img/USD-logo.svg" alt="USD logo" />
-        <h1>Intelligent Target Locator</h1>
-        <ul>
-          <li>
-            <Link to="/about">Login</Link>
-          </li>
-        </ul>
+        <div className="navbar__section">
+          <img src="src/assets/img/USD-logo.svg" alt="USD logo" />
+        </div>
+        <div className="navbar__section">
+          <h1>Intelligent Target Locator</h1>
+        </div>
+        <div className="navbar__section">
+          <ul>
+            <li>
+              <Link to="/about">Login</Link>
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
   );

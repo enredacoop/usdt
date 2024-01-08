@@ -1,4 +1,3 @@
-import axios from "axios";
 import { ApiService } from "./ApiService";
 
 export class ApiServiceImpl implements ApiService {
@@ -9,12 +8,15 @@ export class ApiServiceImpl implements ApiService {
   }
 
   async fetchUsers(): Promise<object[]> {
-    const response = await axios.get(`${this.apiUrl}/users`);
-    return response.data;
+    const response = await fetch(`${this.apiUrl}/users`);
+    return response.json();
   }
 
-  async postData(data: unknown): Promise<unknown> {
-    const response = await axios.post(`${this.apiUrl}/post`, data);
-    return response.data;
+  async uploadFile(data: BodyInit): Promise<unknown> {
+    const response = await fetch(`${this.apiUrl}/form`, {
+      method: "POST",
+      body: data,
+    });
+    return response.json();
   }
 }

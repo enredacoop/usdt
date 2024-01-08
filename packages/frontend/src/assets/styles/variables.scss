@@ -15,6 +15,16 @@ $color-button-fill-hover: #445fa7;
 $color-secondary-background: #c6f0ff;
 $color-black: #000;
 $color-white: #fff;
+$color-neutral-50: #fafafa;
+$color-neutral-100: #f5f5f5;
+$color-neutral-200: #eeeeee;
+$color-neutral-300: #e0e0e0;
+$color-neutral-400: #bdbdbd;
+$color-neutral-500: #9e9e9e;
+$color-neutral-600: #757575;
+$color-neutral-700: #616161;
+$color-neutral-800: #424242;
+$color-neutral-900: #212121;
 
 @font-face {
   font-family: "Brygada1918";
@@ -25,7 +35,7 @@ $color-white: #fff;
 }
 @font-face {
   font-family: "DM Sans";
-  src: url("@/assets/DM_Sans/DMSans-VariableFont_opsz_wght.woff2")
+  src: url("@/assets/fonts/DM_Sans/DMSans-VariableFont_opsz_wght.woff2")
     format("woff2");
   font-weight: 100 900;
   font-display: swap;
@@ -49,7 +59,7 @@ $font-heading-sm-2:
 
 $font-text-lg:
   400 1.125rem / normal "DM Sans",
-  sans-serif;
+  serif;
 $font-text-md:
   400 1rem / 1.5rem "DM Sans",
   sans-serif;
