@@ -1,10 +1,11 @@
 import "./styles.scss";
+import footerImg from "../../assets/img/eu-funding.png";
 
 const Footer = () => {
   return (
     <>
       <div className="footer">
-        <img src="src/assets/img/eu-funding.png" alt="" />
+        <img src={footerImg} alt="" />
         <p>
           The cooperation project (2021-1-ES01-KA220-HED-000029950) has been
           funded with support from the European Commission. This website

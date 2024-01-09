@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 import "./styles.scss";
+import usdImg from "../../assets/img/USD-logo.svg";
 
 const NavBar = () => {
   return (
     <nav>
       <div className="navbar">
         <div className="navbar__section">
-          <img src="src/assets/img/USD-logo.svg" alt="USD logo" />
+          <img src={usdImg} alt="USD logo" />
         </div>
         <div className="navbar__section">
           <h1>Intelligent Target Locator</h1>

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./styles.scss";
+import uploadImg from "../../assets/img/upload-button.svg";
 import { useApiService } from "../../hooks/useApiService";
 
 const Form = () => {
@@ -66,7 +67,7 @@ const Form = () => {
       <div className="form__body">
         <label htmlFor="file" className="form__fileupload">
           <img
-            src="src/assets/img/upload-button.svg"
+            src={uploadImg}
             alt="Upload File Button"
             width={48}
             height={48}

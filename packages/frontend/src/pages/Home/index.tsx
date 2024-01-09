@@ -1,19 +1,13 @@
 import Form from "../../components/Form";
 import "./styles.scss";
+import itlImg from "../../assets/img/ITL-hero.svg";
+import amicoImg from "../../assets/img/amico.svg";
+import upoImg from "../../assets/img/upo.png";
+import vilniausImg from "../../assets/img/vilniaus.jpeg";
+import savoniaImg from "../../assets/img/savonia.png";
+import openodsImg from "../../assets/img/openods.jpeg";
 
 export default function Home() {
-  // const [users, setUsers] = useState<object[]>([]);
-  // const apiService = useApiService();
-
-  // useEffect(() => {
-  //   const fetchUsers = async () => {
-  //     const fetchedUsers = await apiService.fetchUsers();
-  //     setUsers(fetchedUsers);
-  //     console.log(fetchedUsers);
-  //   };
-  //   if (!users.length) fetchUsers();
-  // }, [apiService]);
-
   return (
     <>
       <div className="herosection">
@@ -27,7 +21,7 @@ export default function Home() {
               className="herosection__img"
               height={308.2}
               width={417.93}
-              src="src/assets/img/ITL-hero.svg"
+              src={itlImg}
               alt="Intelligent Target Locator"
             />
           </div>
@@ -41,11 +35,7 @@ export default function Home() {
       <div className="infosection">
         <h2>What is Intelligent Target Locator?</h2>
         <div className="infosection__block">
-          <img
-            className="infosection__image"
-            src="src/assets/img/amico.svg"
-            alt=""
-          />
+          <img className="infosection__image" src={amicoImg} alt="" />
           <div className="infosection__content">
             <p>
               Lorem ipsum dolor sit amet consectetur. Elementum quis massa
@@ -87,25 +77,25 @@ export default function Home() {
         <h2>Partners</h2>
         <div className="partnerssection__block">
           <img
-            src="src/assets/img/upo.png"
+            src={upoImg}
             alt="Logo de Universidad Pablo Olavide"
             width={250}
             height={250}
           />
           <img
-            src="src/assets/img/vilniaus.jpeg"
+            src={vilniausImg}
             alt="Logo de Universidad de Vilniaus"
             width={250}
             height={250}
           />
           <img
-            src="src/assets/img/savonia.png"
+            src={savoniaImg}
             alt="Logo de Universidad de Savonia"
             width={250}
             height={250}
           />
           <img
-            src="src/assets/img/openods.jpeg"
+            src={openodsImg}
             alt="Logo de OpenODS"
             width={250}
             height={250}
