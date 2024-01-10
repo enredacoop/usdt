@@ -8,7 +8,7 @@ function getUser(id: number) {
     return db('users').select('*').where({ id }).first();
 }
 
-function createUser(name: string, email: string) {
+function createUser(name: string, email: string, token: string) {
     return db('users').insert({ name, email }).returning('*');
 }
 

@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import dbService from './db';
+import { mailerService } from './mailer';
 
 const router = Router();
 
@@ -16,5 +17,7 @@ router.get('/users', async (req, res) => {
         res.send(users);
     });
 });
+
+router.post('/doc', async (req, res) => {});
 
 export default router;

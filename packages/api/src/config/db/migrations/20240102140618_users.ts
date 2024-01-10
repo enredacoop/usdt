@@ -5,6 +5,9 @@ export async function up(knex: Knex): Promise<void> {
         table.increments('id').primary();
         table.string('name').notNullable();
         table.string('email').notNullable();
+        table.string('token').nullable();
+        table.boolean('verified').notNullable().defaultTo(false);
+        table.timestamps(true, true);
     });
 }
 
