@@ -1,4 +1,4 @@
-import transport from './config/mailer/config';
+import transport from '../config/mailer/config';
 
 function sendVerificationEmail(email: string, token: string) {
     return transport.sendMail({
@@ -7,7 +7,8 @@ function sendVerificationEmail(email: string, token: string) {
         subject: 'Verify your email address',
         html: `
             <h1>Verify your email address</h1>
-            <p>Click <a href="${process.env.FRONTEND_URL}/verify-email?token=${token}">here</a> to verify your email address.</p>
+            <p>Use this code to complete the submit process:</p>
+            <p><b>${token}</b></p>
         `
     });
 }

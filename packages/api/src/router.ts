@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import dbService from './db';
-import { mailerService } from './mailer';
+import dbService from './services/db';
+import handlers from './handlers';
 
 const router = Router();
 
@@ -12,12 +12,22 @@ router.get('/docs', (req, res) => {
     res.send('Yeah, docs!');
 });
 
-router.get('/users', async (req, res) => {
-    await dbService.getUsers().then((users) => {
-        res.send(users);
+router.get('/records', async (req, res) => {
+    await dbService.getRecords().then((records) => {
+        res.send(records);
     });
 });
 
-router.post('/doc', async (req, res) => {});
+router.post('/send', async (req, res) => {
+    await handlers.sendVerificationEmail(req, res);
+});
+
+router.post('/verify', async (req, res) => {
+    await handlers.verifyCode(req, res);
+});
+
+router.post('/doc', async (req, res) => {
+    await handlers.postDocument(req, res);
+});
 
 export default router;
