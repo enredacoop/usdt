@@ -2,26 +2,34 @@ import { Request, Response } from 'express';
 import crypto from 'crypto';
 import dbService from './services/db';
 import { mailerService } from './services/mailer';
+import formidable from 'formidable';
 
-const postDocument = async (req: Request, res: Response) => {
-    const { name, email, token, file } = req.body;
-    console.log(req.body);
-
-    if (!name || !email || !token || !file) {
-        return res.sendStatus(400);
-    }
-    try {
-        const verifiedRecord = await dbService.getVerifiedRecord({ email, token });
-        if (!verifiedRecord) {
-            return res.sendStatus(400);
+async function postDocument(req: Request, res: Response) {
+    const form = formidable({ multiples: true });
+    form.parse(req, async (err, fields, files) => {
+        if (err) {
+            return res.status(400).json({ message: err.message });
         }
-        await dbService.updateRecord(verifiedRecord.id, { name });
-    } catch (err) {
-        console.log(err);
-        return res.sendStatus(500);
-    }
-    return res.status(200).send('Record created');
-};
+        Object.values(files).forEach((file) => {
+            console.log('file uploaded');
+        });
+
+        const email = (fields.email as string[])?.[0];
+        const token = (fields.token as string[])?.[0];
+        const name = (fields.name as string[])?.[0];
+
+        if (!email || !token) {
+            return res.status(400).send('Missing fields');
+        }
+        const record = await dbService.getRecord({ email, token, verified: true });
+        if (!record) {
+            return res.status(400).send('Invalid code or not verified');
+        }
+        await dbService.updateRecord(record.id, { name });
+
+        return res.status(200).send('Record updated');
+    });
+}
 
 const verifyCode = async (req: Request, res: Response) => {
     const { email, token } = req.body;

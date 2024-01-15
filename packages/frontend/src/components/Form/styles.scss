@@ -1,6 +1,10 @@
-@mixin text-input-field() {
+@mixin paddings() {
   padding-right: 1.5rem;
   padding-left: 1.5rem;
+}
+
+@mixin text-input-field() {
+  @include paddings();
   & input {
     margin: 0 !important;
     font: $font-text-md;
@@ -14,6 +18,15 @@
       border: 1px solid #00268a;
     }
   }
+}
+
+h4 {
+  font: $font-text-lg;
+  text-align: center;
+}
+p {
+  font: $font-text-sm;
+  color: $color-neutral-700;
 }
 
 .form {
@@ -37,8 +50,7 @@
     all: unset;
     display: flex;
     align-items: center;
-    padding-right: 1.5rem;
-    padding-left: 1.5rem;
+    @include paddings();
     cursor: pointer;
 
     img {
@@ -54,13 +66,12 @@
     padding-top: 1.5rem;
     @include text-input-field();
   }
-  &__title {
+  &__name {
     padding-top: 0.5rem;
     @include text-input-field();
   }
   &__terms {
-    padding-right: 1.5rem;
-    padding-left: 1.5rem;
+    @include paddings();
     padding-top: 0.5rem;
     display: flex;
     flex-direction: row;
@@ -77,8 +88,7 @@
     }
   }
   &__submitbutton {
-    padding-right: 1.5rem;
-    padding-left: 1.5rem;
+    @include paddings();
     padding-top: 1.5rem;
     padding-bottom: 1.5rem;
     & button {
@@ -90,15 +100,43 @@
       padding-top: 1rem;
       padding-bottom: 1rem;
       font: $font-text-button;
-      background-color: #00268a;
-      color: white;
       text-align: center;
-      //   color: $color-white;
-      //   font: $font-text-md;
-      //   &:hover {
-      //     background-color: #00268a;
-      //     color: $color-white;
-      //   }
+    }
+    & .fill {
+      background-color: $color-primary-brand;
+      color: white;
+    }
+    & .outline {
+      border: 1px solid $color-primary-brand;
+      color: $color-primary-brand;
+    }
+  }
+  &__verification {
+    @include text-input-field();
+    input {
+      text-align: center;
+    }
+  }
+  &__loading {
+    @include paddings();
+    text-align: center;
+
+    h4 {
+      margin-top: 1rem;
+    }
+    p {
+      margin-top: 1rem;
+    }
+  }
+  &__success {
+    @include paddings();
+    text-align: center;
+    h4 {
+      margin-top: 1rem;
+    }
+    p {
+      color: $color-neutral-700;
+      margin-top: 1rem;
     }
   }
 }

@@ -1,0 +1,15 @@
+.check {
+  margin: auto;
+  background-color: $color-primary-brand;
+  width: 6rem;
+  height: 6rem;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  img {
+    width: 2rem;
+    height: 2rem;
+  }
+}

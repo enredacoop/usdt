@@ -7,6 +7,7 @@ function getRecords() {
 type RecordParams = {
     email: string;
     token: string;
+    verified?: boolean;
 };
 function getRecord(params: RecordParams) {
     return db('records').select('*').where(params).first();

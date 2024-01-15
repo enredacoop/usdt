@@ -2,9 +2,19 @@ import { useState } from "react";
 import "./styles.scss";
 import uploadImg from "../../assets/img/upload-button.svg";
 import { useApiService } from "../../hooks/useApiService";
+import Loader from "../Loader";
+import Check from "../Check";
+
+const VERIFICATION_CODE_LENGTH = 8;
+const INITIAL_STEP = 1;
+
+const controller = new AbortController();
 
 const Form = () => {
   const [file, setFile] = useState<File | null>(null);
+  const [formData, setFormData] = useState(new FormData());
+  const [step, setStep] = useState(INITIAL_STEP);
+
   const apiService = useApiService();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -14,49 +24,86 @@ const Form = () => {
     }
   };
 
-  const handleFormSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleFormSubmit = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
     event.preventDefault();
+    const email = (document.getElementById("email") as HTMLInputElement).value;
+    const name = (document.getElementById("name") as HTMLInputElement).value;
+    const terms = (document.getElementById("terms") as HTMLInputElement)
+      .checked;
+
     if (!file) {
       alert("Please select a file to upload.");
       return;
     }
-    if (!(document.getElementById("email") as HTMLInputElement).value) {
+    if (!email) {
       alert("Please enter your email address.");
       return;
     }
-    if (!(document.getElementById("title") as HTMLInputElement).value) {
-      alert("Please enter the title of the document.");
+    if (!name) {
+      alert("Please enter the name of the document.");
       return;
     }
-    if (!(document.getElementById("terms") as HTMLInputElement).checked) {
+    if (!terms) {
       alert("Please accept the Terms and Conditions.");
       return;
     }
     const formData = new FormData();
     formData.append("file", file);
-    formData.append(
-      "email",
-      (document.getElementById("email") as HTMLInputElement).value
-    );
-    formData.append(
-      "title",
-      (document.getElementById("title") as HTMLInputElement).value
-    );
-    formData.append(
-      "terms",
-      (document.getElementById("terms") as HTMLInputElement).checked.toString()
-    );
+    formData.append("email", email);
+    formData.append("name", name);
 
-    apiService
-      .uploadFile(formData)
-      .then((res) => {
-        alert("File uploaded successfully.");
-        console.log(res);
-      })
-      .catch((err) => {
-        alert("File upload failed.");
-        console.log(err);
-      });
+    setFormData(formData);
+
+    try {
+      await apiService.sendVerification({ email });
+      setStep(2);
+    } catch (error) {
+      alert("Error sending verification.");
+    }
+  };
+
+  const handleVerification = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+    const token = (document.getElementById("verification") as HTMLInputElement)
+      .value;
+
+    if (!token) {
+      alert("Please enter the verification code.");
+      return;
+    }
+
+    formData.append("token", token);
+
+    const email = formData.get("email") as string;
+
+    try {
+      await apiService.verifyCode({ token, email });
+      setStep(3);
+      await handleDocumentUpload();
+    } catch (error) {
+      alert("Error uploading file.");
+    }
+  };
+
+  const handleDocumentUpload = async () => {
+    try {
+      await apiService.postDocument(formData, controller.signal);
+      setStep(4);
+    } catch (error) {
+      alert("Error uploading file.");
+    }
+  };
+
+  const handleCancelation = async (
+    event: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    event.preventDefault();
+    controller.abort();
+    setStep(1);
   };
 
   return (
@@ -64,58 +111,142 @@ const Form = () => {
       <div className="form__heading">
         <h3>Send your document</h3>
       </div>
-      <div className="form__body">
-        <label htmlFor="file" className="form__fileupload">
-          <img
-            src={uploadImg}
-            alt="Upload File Button"
-            width={48}
-            height={48}
-          />
-          {file && <span>{file.name}</span>}
-          {!file && <span>Upload PDF document</span>}
-          <input
-            type="file"
-            name="file"
-            id="file"
-            hidden
-            onChange={handleFileChange}
-          />
-        </label>
-        <div className="form__email">
-          <label hidden htmlFor="email">
-            Email
-          </label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            placeholder="Your email address"
-          />
-        </div>
-        <div className="form__title">
-          <label hidden htmlFor="title">
-            Title
-          </label>
-          <input
-            type="title"
-            name="title"
-            id="title"
-            placeholder="Title of the document"
-          />
-        </div>
-        <div className="form__terms">
-          <input type="checkbox" name="terms" id="terms" />
-          <label htmlFor="terms">
-            I accept the Terms and Conditions by submitting the file.
-          </label>
-        </div>
-      </div>
-      <div className="form__submitbutton">
-        <button type="submit" onClick={handleFormSubmit}>
-          Send
-        </button>
-      </div>
+      {step === 1 && (
+        <>
+          <div className="form__body">
+            <label htmlFor="file" className="form__fileupload">
+              <img
+                src={uploadImg}
+                alt="Upload File Button"
+                width={48}
+                height={48}
+              />
+              {file && <span>{file.name}</span>}
+              {!file && <span>Upload PDF document</span>}
+              <input
+                type="file"
+                name="file"
+                id="file"
+                hidden
+                onChange={handleFileChange}
+              />
+            </label>
+            <div className="form__email">
+              <label hidden htmlFor="email">
+                Email
+              </label>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                placeholder="Your email address"
+              />
+            </div>
+            <div className="form__name">
+              <label hidden htmlFor="name">
+                Title
+              </label>
+              <input
+                type="name"
+                name="name"
+                id="name"
+                placeholder="Title of the document"
+              />
+            </div>
+            <div className="form__terms">
+              <input type="checkbox" name="terms" id="terms" />
+              <label htmlFor="terms">
+                I accept the Terms and Conditions by submitting the file.
+              </label>
+            </div>
+          </div>
+          <div className="form__submitbutton">
+            <button
+              className="fill"
+              type="submit"
+              onClick={(e) => handleFormSubmit(e)}
+            >
+              Send
+            </button>
+          </div>
+        </>
+      )}
+      {step === 2 && (
+        <>
+          <div className="form__body">
+            <div className="form__verification">
+              <h4>Confirm your email address</h4>
+              <label hidden htmlFor="verification">
+                Verification Code
+              </label>
+              <input
+                type="text"
+                name="verification"
+                id="verification"
+                placeholder="Verification Code"
+                maxLength={VERIFICATION_CODE_LENGTH}
+              />
+              <p>
+                We have sent a verification code to example@example.com to
+                ensure it's you.
+              </p>
+            </div>
+          </div>
+          <div className="form__submitbutton">
+            <button
+              className="fill"
+              type="submit"
+              onClick={(e) => handleVerification(e)}
+            >
+              Verify
+            </button>
+          </div>
+        </>
+      )}
+      {step === 3 && (
+        <>
+          <div className="form__body">
+            <div className="form__loading">
+              <Loader />
+              <h4>Sending document</h4>
+              <p>Do not close this window until the submission is complete.</p>
+            </div>
+          </div>
+          <div className="form__submitbutton">
+            <button
+              className="outline"
+              type="submit"
+              onClick={(e) => handleCancelation(e)}
+            >
+              Cancel
+            </button>
+          </div>
+        </>
+      )}
+      {step === 4 && (
+        <>
+          <div className="form__body">
+            <div className="form__success">
+              <Check />
+              <h4>Your document has been successfully submitted</h4>
+              <p>
+                You will receive a link to your email address
+                example@example.com with the results. Your results will be
+                stored in the Knowledge for Sustainability portal.
+              </p>
+            </div>
+          </div>
+          <div className="form__submitbutton">
+            <button
+              className="outline"
+              type="submit"
+              onClick={() => setStep(1)}
+            >
+              Send another document
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 };

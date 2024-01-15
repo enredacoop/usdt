@@ -1,4 +1,4 @@
-import { ApiService } from "./ApiService";
+import { ApiService, SendVerificationData, VerifyCodeData } from "./ApiService";
 
 export class ApiServiceImpl implements ApiService {
   private apiUrl: string;
@@ -12,11 +12,36 @@ export class ApiServiceImpl implements ApiService {
     return response.json();
   }
 
-  async uploadFile(data: BodyInit): Promise<unknown> {
-    const response = await fetch(`${this.apiUrl}/form`, {
+  async sendVerification(data: SendVerificationData): Promise<void> {
+    console.log(data);
+
+    await fetch(`${this.apiUrl}/send`, {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+  async verifyCode(data: VerifyCodeData): Promise<void> {
+    console.log(data);
+
+    await fetch(`${this.apiUrl}/verify`, {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
+  async postDocument(data: FormData, signal: AbortSignal): Promise<void> {
+    console.log(data);
+
+    await fetch(`${this.apiUrl}/doc`, {
       method: "POST",
       body: data,
+      signal: signal,
     });
-    return response.json();
   }
 }
