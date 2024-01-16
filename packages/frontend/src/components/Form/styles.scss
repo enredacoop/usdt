@@ -116,6 +116,15 @@ p {
     input {
       text-align: center;
     }
+    h4 {
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+    p {
+      margin-top: 1rem;
+      text-align: center;
+      padding: 0 4rem;
+    }
   }
   &__loading {
     @include paddings();

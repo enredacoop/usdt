@@ -4,6 +4,7 @@ import uploadImg from "../../assets/img/upload-button.svg";
 import { useApiService } from "../../hooks/useApiService";
 import Loader from "../Loader";
 import Check from "../Check";
+import Lock from "../Lock";
 
 const VERIFICATION_CODE_LENGTH = 8;
 const INITIAL_STEP = 1;
@@ -103,6 +104,12 @@ const Form = () => {
   ) => {
     event.preventDefault();
     controller.abort();
+    handleReset();
+  };
+
+  const handleReset = () => {
+    setFile(null);
+    setFormData(new FormData());
     setStep(1);
   };
 
@@ -175,6 +182,7 @@ const Form = () => {
         <>
           <div className="form__body">
             <div className="form__verification">
+              <Lock />
               <h4>Confirm your email address</h4>
               <label hidden htmlFor="verification">
                 Verification Code
@@ -187,8 +195,8 @@ const Form = () => {
                 maxLength={VERIFICATION_CODE_LENGTH}
               />
               <p>
-                We have sent a verification code to example@example.com to
-                ensure it's you.
+                We have sent a verification code to{" "}
+                <b>{formData.get("email") as string}</b> to ensure it's you.
               </p>
             </div>
           </div>
@@ -230,18 +238,15 @@ const Form = () => {
               <Check />
               <h4>Your document has been successfully submitted</h4>
               <p>
-                You will receive a link to your email address
-                example@example.com with the results. Your results will be
-                stored in the Knowledge for Sustainability portal.
+                You will receive a link to your email address{" "}
+                <b>{formData.get("email") as string}</b> with the results. Your
+                results will be stored in the Knowledge for Sustainability
+                portal.
               </p>
             </div>
           </div>
           <div className="form__submitbutton">
-            <button
-              className="outline"
-              type="submit"
-              onClick={() => setStep(1)}
-            >
+            <button className="outline" type="submit" onClick={handleReset}>
               Send another document
             </button>
           </div>
