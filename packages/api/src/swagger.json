@@ -44,6 +44,125 @@
                     }
                 ]
             }
+        },
+        "/send": {
+            "post": {
+                "summary": "Send verification email",
+                "description": "Send verification email to a user.",
+                "requestBody": {
+                    "description": "Email address of the user to send verification email to.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": ["email"]
+                            },
+                            "example": {
+                                "email": "example@email.com"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Email sent."
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                }
+            }
+        },
+        "/verify": {
+            "post": {
+                "summary": "Verify email with token",
+                "description": "Verify email address of a user.",
+                "requestBody": {
+                    "description": "Email address of the user to verify.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "token": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": ["email", "token"]
+                            },
+                            "example": {
+                                "email": "example@email.com",
+                                "token": "123456"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Record verified."
+                    },
+                    "400": {
+                        "description": "Record already verified."
+                    },
+                    "404": {
+                        "description": "Record not found"
+                    }
+                }
+            }
+        },
+        "/doc": {
+            "post": {
+                "summary": "Upload a document",
+                "description": "Upload a document and send it to analysis.",
+                "requestBody": {
+                    "description": "Content of the upload form.",
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "file": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "token": {
+                                        "type": "string"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": ["file", "email", "token", "name"]
+                            },
+                            "example": {
+                                "file": "document.pdf",
+                                "email": "example@email.com",
+                                "token": "123456",
+                                "name": "Document 1"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Record updated"
+                    },
+                    "400": {
+                        "description": "Missing or invalid parameters"
+                    }
+                }
+            }
         }
     }
 }

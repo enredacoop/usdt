@@ -19,7 +19,7 @@ async function postDocument(req: Request, res: Response) {
         const name = (fields.name as string[])?.[0];
 
         if (!email || !token) {
-            return res.status(400).send('Missing fields');
+            return res.status(400).send('Missing parameters');
         }
         const record = await dbService.getRecord({ email, token, verified: true });
         if (!record) {
@@ -35,7 +35,7 @@ const verifyCode = async (req: Request, res: Response) => {
     const { email, token } = req.body;
     const record = await dbService.getRecord({ email, token });
     if (!record) {
-        return res.status(400).send('Invalid code');
+        return res.status(404).send('Record not found');
     }
     if (record.verified) {
         return res.status(400).send('Record already verified');
