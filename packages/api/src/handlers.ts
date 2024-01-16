@@ -33,12 +33,12 @@ async function postDocument(req: Request, res: Response) {
 
 const verifyCode = async (req: Request, res: Response) => {
     const { email, token } = req.body;
-    const record = await dbService.getRecord({ email, token });
+    const record = await dbService.getRecord({ email, token, verified: false });
     if (!record) {
         return res.status(404).send('Record not found');
     }
-    if (record.verified) {
-        return res.status(400).send('Record already verified');
+    if (record.token_expires_at < new Date()) {
+        return res.status(400).send('Code expired');
     }
     await dbService.updateRecord(record.id, { verified: true });
     return res.status(200).send('Record verified');
@@ -53,7 +53,8 @@ const sendVerificationEmail = async (req: Request, res: Response) => {
     }
     try {
         const token = crypto.randomBytes(4).toString('hex').toUpperCase();
-        await dbService.createRecord({ email, token });
+        const uuid = crypto.randomUUID();
+        await dbService.createRecord({ id: uuid, email, token });
         mailerService.sendVerificationEmail(email, token);
         return res.status(200).send('Email sent');
     } catch (err) {

@@ -1,3 +1,4 @@
+import { UUID } from 'crypto';
 import db from '../config/db';
 
 function getRecords() {
@@ -25,11 +26,14 @@ function getVerifiedRecord(params: GetVerifiedRecordParams) {
 }
 
 type CreateRecordParams = {
+    id: UUID;
     email: string;
     token: string;
 };
 function createRecord(params: CreateRecordParams) {
-    return db('records').insert(params).returning('*');
+    const now = new Date();
+    const expiresAt = new Date(now.getTime() + 1000 * 60 * 60 * 24);
+    return db('records').insert({ ...params, token_expires_at: expiresAt });
 }
 
 type UpdateRecordParams = {
