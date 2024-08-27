@@ -73,3 +73,15 @@ $font-text-label:
 $font-text-button:
   700 1rem / 1.5rem "DM Sans",
   sans-serif;
+
+$layout-padding-x: 6rem;
+
+/* Tablet */
+@media screen and (max-width: 768px) {
+  $layout-padding-x: 3rem;
+}
+
+/* Mobile */
+@media screen and (max-width: 360px) {
+  $layout-padding-x: 1.25rem;
+}

@@ -3,16 +3,25 @@ import crypto from 'crypto';
 import dbService from './services/db';
 import { mailerService } from './services/mailer';
 import formidable from 'formidable';
+import upoService from './services/upo';
 
 async function postDocument(req: Request, res: Response) {
     const form = formidable({ multiples: true });
+
     form.parse(req, async (err, fields, files) => {
         if (err) {
             return res.status(400).json({ message: err.message });
         }
-        Object.values(files).forEach((file) => {
+        let uploadedFile = files.file![0];
+
+        if (uploadedFile) {
+            await upoService.sendDoc(uploadedFile);
             console.log('file uploaded');
-        });
+        }
+
+        console.log('fields');
+        console.log(fields);
+        console.log(files);
 
         const email = (fields.email as string[])?.[0];
         const token = (fields.token as string[])?.[0];
@@ -21,11 +30,6 @@ async function postDocument(req: Request, res: Response) {
         if (!email || !token) {
             return res.status(400).send('Missing parameters');
         }
-        const record = await dbService.getRecord({ email, token, verified: true });
-        if (!record) {
-            return res.status(400).send('Invalid code or not verified');
-        }
-        await dbService.updateRecord(record.id, { name });
 
         return res.status(200).send('Record updated');
     });
