@@ -16,8 +16,8 @@ export default defineConfig({
     proxy: {
       "/api": {
         target: VITE_API_URL as string,
-        changeOrigin: true,
-        secure: false,
+        changeOrigin: false,
+        secure: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
     },
