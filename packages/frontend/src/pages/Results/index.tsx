@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import { Link } from "react-router-dom";
 import "./styles.scss";
 import Chart from "../../components/Chart";

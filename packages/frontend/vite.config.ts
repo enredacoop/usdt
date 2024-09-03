@@ -9,6 +9,9 @@ const { VITE_API_URL } = process.env;
 console.log("VITE_API_URL", VITE_API_URL);
 // https://vitejs.dev/config/
 export default defineConfig({
+  build: {
+    outDir: "dist",
+  },
   server: {
     proxy: {
       "/api": {
