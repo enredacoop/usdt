@@ -81,7 +81,7 @@ export default function Results() {
             <h3>SDG Detected</h3>
             <div className="sdg-grid__results">
               {sdgList.map((sdg) => {
-                return <img src={sdgObj[`sdg${sdg}`]} />;
+                return <img key={sdg} src={sdgObj[`sdg${sdg}`]} />;
               })}
             </div>
           </div>

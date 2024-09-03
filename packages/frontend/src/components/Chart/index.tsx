@@ -137,7 +137,15 @@ function svg({ data }) {
         return +this.getAttribute("fill-opacity") || arcVisible(d.target);
       })
       .attr("fill-opacity", (d) => {
-        return arcVisible(d.target) ? (d.children ? 1 : 0.5) : 0;
+        console.log(arcVisible(d.target));
+        // change opacity on transitions
+        return arcVisible(d.target)
+          ? d.children
+            ? 1
+            : d.target.y0 === 1
+              ? 1
+              : 0.5
+          : 0;
       })
       .attr("pointer-events", (d) => (arcVisible(d.target) ? "auto" : "none"))
       .attrTween("d", (d) => () => arc(d.current));

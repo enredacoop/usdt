@@ -28,5 +28,8 @@ nav {
     &__section:last-child {
       flex: 1;
     }
+    &__section a {
+      text-decoration: none;
+    }
   }
 }

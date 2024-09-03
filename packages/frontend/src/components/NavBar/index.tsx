@@ -10,7 +10,9 @@ const NavBar = () => {
           <img src={usdImg} alt="USD logo" />
         </div>
         <div className="navbar__section">
-          <h1>Intelligent Target Locator</h1>
+          <a href="/">
+            <h1>Intelligent Target Locator</h1>
+          </a>
         </div>
         <div className="navbar__section">
           <ul>
