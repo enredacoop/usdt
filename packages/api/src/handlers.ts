@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import crypto from 'crypto';
+import crypto, { UUID } from 'crypto';
 import dbService from './services/db';
 import { mailerService } from './services/mailer';
 import formidable from 'formidable';
@@ -12,32 +12,45 @@ async function postDocument(req: Request, res: Response) {
         if (err) {
             return res.status(400).json({ message: err.message });
         }
-        let uploadedFile = files.file![0];
-
-        if (uploadedFile) {
-            await upoService.sendDoc(uploadedFile);
-            console.log('file uploaded');
-        }
-
-        console.log('fields');
-        console.log(fields);
-        console.log(files);
 
         const email = (fields.email as string[])?.[0];
         const token = (fields.token as string[])?.[0];
         const name = (fields.name as string[])?.[0];
+        const uuid = (fields.uuid as UUID[])?.[0];
 
-        if (!email || !token) {
+        if (!email || !token || !uuid || !name) {
             return res.status(400).send('Missing parameters');
         }
+
+        let uploadedFile = files.file![0];
+
+        if (!uploadedFile) {
+            return res.status(400).send('Missing file');
+        }
+
+        const clientIp = (req.headers['x-forwarded-for'] as string) || (req.connection.remoteAddress as string);
+
+        try {
+            const data = await upoService.sendDoc({ file: uploadedFile, ip: clientIp, email: email, metadata: {} });
+            const analysisId = data.requestID;
+            console.log('file uploaded');
+            if (!analysisId) {
+                return res.status(500).send('Error sending the file. No response');
+            }
+            await dbService.updateRecord(uuid, { analysisId });
+        } catch {
+            return res.status(500).send('Error processing the request');
+        }
+
+        console.log('fields', email + token + name + uuid);
 
         return res.status(200).send('Record updated');
     });
 }
 
 const verifyCode = async (req: Request, res: Response) => {
-    const { email, token } = req.body;
-    const record = await dbService.getRecord({ email, token, verified: false });
+    const { uuid, email, token } = req.body;
+    const record = await dbService.getRecord({ id: uuid, email, token, verified: false });
     if (!record) {
         return res.status(404).send('Record not found');
     }
@@ -58,9 +71,10 @@ const sendVerificationEmail = async (req: Request, res: Response) => {
     try {
         const token = crypto.randomBytes(4).toString('hex').toUpperCase();
         const uuid = crypto.randomUUID();
+        console.log(token);
         await dbService.createRecord({ id: uuid, email, token });
         mailerService.sendVerificationEmail(email, token);
-        return res.status(200).send('Email sent');
+        return res.status(200).send({ uuid: uuid });
     } catch (err) {
         console.log(err);
         return res.sendStatus(500);

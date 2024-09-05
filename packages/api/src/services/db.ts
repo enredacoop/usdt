@@ -1,11 +1,13 @@
 import { UUID } from 'crypto';
 import db from '../config/db';
+import { camelToSnake } from '../config/db/utils';
 
 function getRecords() {
     return db('records').select('*');
 }
 
 type RecordParams = {
+    id: UUID;
     email: string;
     token: string;
     verified?: boolean;
@@ -41,12 +43,14 @@ type UpdateRecordParams = {
     email?: string;
     token?: string;
     verified?: boolean;
+    analysisId?: string;
 };
-function updateRecord(id: number, params: UpdateRecordParams) {
-    return db('records').update(params).where({ id }).returning('*');
+function updateRecord(id: UUID, params: UpdateRecordParams) {
+    let prms = camelToSnake(params);
+    return db('records').update(prms).where({ id }).returning('*');
 }
 
-function deleteRecord(id: number) {
+function deleteRecord(id: UUID) {
     return db('records').del().where({ id });
 }
 

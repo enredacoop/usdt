@@ -12,16 +12,18 @@ export class ApiServiceImpl implements ApiService {
     return response.json();
   }
 
-  async sendVerification(data: SendVerificationData): Promise<void> {
-    console.log(data);
-
-    await fetch(`${this.apiUrl}/send`, {
+  async sendVerification(
+    data: SendVerificationData
+  ): Promise<{ uuid: string }> {
+    const response = await fetch(`${this.apiUrl}/send`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
         "Content-Type": "application/json",
       },
     });
+    const { uuid } = await response.json();
+    return { uuid };
   }
   async verifyCode(data: VerifyCodeData): Promise<void> {
     console.log(data);

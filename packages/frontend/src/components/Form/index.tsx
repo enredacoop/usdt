@@ -14,6 +14,7 @@ const controller = new AbortController();
 const Form = () => {
   const [file, setFile] = useState<File | null>(null);
   const [formData, setFormData] = useState(new FormData());
+  const [UUID, setUUID] = useState("");
   const [step, setStep] = useState(INITIAL_STEP);
 
   const apiService = useApiService();
@@ -58,7 +59,10 @@ const Form = () => {
     setFormData(formData);
 
     try {
-      await apiService.sendVerification({ email });
+      const { uuid } = await apiService.sendVerification({ email });
+      console.log("Send verification");
+      console.log(uuid);
+      setUUID(uuid);
       setStep(2);
     } catch (error) {
       alert("Error sending verification.");
@@ -82,7 +86,7 @@ const Form = () => {
     const email = formData.get("email") as string;
 
     try {
-      await apiService.verifyCode({ token, email });
+      await apiService.verifyCode({ uuid: UUID, token, email });
       setStep(3);
       await handleDocumentUpload();
     } catch (error) {
@@ -91,6 +95,7 @@ const Form = () => {
   };
 
   const handleDocumentUpload = async () => {
+    formData.append("uuid", UUID);
     try {
       await apiService.postDocument(formData, controller.signal);
       setStep(4);

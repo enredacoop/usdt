@@ -8,6 +8,7 @@ export async function up(knex: Knex): Promise<void> {
         table.timestamp('token_expires_at').nullable();
         table.boolean('verified').notNullable().defaultTo(false);
         table.string('name').nullable();
+        table.string('analysis_id').nullable();
         table.timestamps(true, true);
     });
 }
