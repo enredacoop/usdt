@@ -58,6 +58,63 @@ const sendDoc = async (fields: SendDocFields) => {
     // }
 };
 
-const upoService = { sendDoc };
+// Polling function with a long timeout and retry logic
+async function pollApiForResult(analysisId: string, interval = 30000, timeout = 60 * 60 * 1000) {
+    const startTime = Date.now();
+
+    let timeoutId: any;
+
+    return new Promise((resolve, reject) => {
+        const poll = async () => {
+            console.log('polling ' + analysisId);
+
+            try {
+                const params = {
+                    id_request: analysisId,
+                    ip: '1.1.1.1'
+                };
+                const queryString = new URLSearchParams(params).toString();
+                const urlString = `${API_URL}/get_document_affinities?${queryString}`;
+                console.log(urlString);
+
+                const res = await fetch(urlString, {
+                    headers: {
+                        'x-api-key': TOKEN
+                    }
+                });
+
+                const data = await res.json();
+                console.log(data);
+
+                // Check if the API indicates that the result is ready
+                if (data.status === 'finished') {
+                    clearTimeout(timeoutId);
+                    return resolve(data);
+                } else {
+                    // Check if the timeout has been exceeded
+                    if (Date.now() - startTime >= timeout) {
+                        return reject(new Error('Polling timeout exceeded.'));
+                    }
+
+                    // Poll again after the specified interval
+                    timeoutId = setTimeout(poll, interval);
+                }
+            } catch (error) {
+                clearTimeout(timeoutId);
+                // Handle transient network errors by retrying
+                if (Date.now() - startTime >= timeout) {
+                    return reject(new Error(`Polling failed: ${error}`));
+                }
+                console.error(`Error encountered, retrying: ${error}`);
+                timeoutId = setTimeout(poll, interval);
+            }
+        };
+
+        // Start the first poll
+        poll();
+    });
+}
+
+const upoService = { sendDoc, pollApiForResult };
 
 export default upoService;

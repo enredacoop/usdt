@@ -5,6 +5,12 @@ import { mailerService } from './services/mailer';
 import formidable from 'formidable';
 import upoService from './services/upo';
 
+async function waitAndNotify(analysisId: string, email: string) {
+    await upoService.pollApiForResult(analysisId);
+    await mailerService.sendResultLinkEmail(email, analysisId);
+    return;
+}
+
 async function postDocument(req: Request, res: Response) {
     const form = formidable({ multiples: true });
 
@@ -38,6 +44,7 @@ async function postDocument(req: Request, res: Response) {
                 return res.status(500).send('Error sending the file. No response');
             }
             await dbService.updateRecord(uuid, { analysisId });
+            waitAndNotify(analysisId, email);
         } catch {
             return res.status(500).send('Error processing the request');
         }
