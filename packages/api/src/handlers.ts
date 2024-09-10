@@ -6,7 +6,8 @@ import formidable from 'formidable';
 import upoService from './services/upo';
 
 async function waitAndNotify(analysisId: string, email: string) {
-    await upoService.pollApiForResult(analysisId);
+    const document_data = await upoService.pollApiForResult(analysisId);
+
     await mailerService.sendResultLinkEmail(email, analysisId);
     return;
 }
@@ -88,6 +89,17 @@ const sendVerificationEmail = async (req: Request, res: Response) => {
     }
 };
 
-const handlers = { sendVerificationEmail, verifyCode, postDocument };
+const getResults = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    if (!id) return res.status(400).send('No id provided');
+    try {
+        const results = await dbService.getResults(id as UUID);
+        return res.status(200).send(results);
+    } catch (e) {
+        return res.sendStatus(500);
+    }
+};
+
+const handlers = { sendVerificationEmail, verifyCode, postDocument, getResults };
 
 export default handlers;

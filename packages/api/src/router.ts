@@ -17,6 +17,9 @@ router.get('/records', async (req, res) => {
         res.send(records);
     });
 });
+router.get('/records/:id', async (req, res) => {
+    await handlers.getResults(req, res);
+});
 
 router.post('/send', async (req, res) => {
     await handlers.sendVerificationEmail(req, res);

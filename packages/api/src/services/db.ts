@@ -54,6 +54,10 @@ function deleteRecord(id: UUID) {
     return db('records').del().where({ id });
 }
 
-const dbService = { getRecords, getRecord, getVerifiedRecord, createRecord, updateRecord, deleteRecord };
+function getResults(id: UUID) {
+    return db('records').select(['analysis_id', 'analysis_results', 'document_metadata']).where({ id }).first();
+}
+
+const dbService = { getRecords, getRecord, getVerifiedRecord, createRecord, updateRecord, deleteRecord, getResults };
 
 export default dbService;

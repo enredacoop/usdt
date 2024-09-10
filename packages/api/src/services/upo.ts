@@ -89,7 +89,7 @@ async function pollApiForResult(analysisId: string, interval = 30000, timeout = 
                 // Check if the API indicates that the result is ready
                 if (data.status === 'finished') {
                     clearTimeout(timeoutId);
-                    return resolve(data);
+                    return resolve(data.document_affinities);
                 } else {
                     // Check if the timeout has been exceeded
                     if (Date.now() - startTime >= timeout) {

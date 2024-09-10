@@ -1,4 +1,10 @@
-import { ApiService, SendVerificationData, VerifyCodeData } from "./ApiService";
+import { UUID } from "crypto";
+import {
+  ApiService,
+  Results,
+  SendVerificationData,
+  VerifyCodeData,
+} from "./ApiService";
 
 export class ApiServiceImpl implements ApiService {
   private apiUrl: string;
@@ -45,5 +51,15 @@ export class ApiServiceImpl implements ApiService {
       body: data,
       signal: signal,
     });
+  }
+
+  async fetchResults(id: UUID): Promise<Results> {
+    const response = await fetch(`${this.apiUrl}/records/${id}`);
+    const data = await response.json();
+    return {
+      analysisId: data.analysis_id,
+      analysisResults: data.analysis_results,
+      documentMetadata: data.document_metadata,
+    };
   }
 }

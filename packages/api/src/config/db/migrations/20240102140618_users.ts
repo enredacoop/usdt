@@ -9,6 +9,8 @@ export async function up(knex: Knex): Promise<void> {
         table.boolean('verified').notNullable().defaultTo(false);
         table.string('name').nullable();
         table.string('analysis_id').nullable();
+        table.jsonb('analysis_results').nullable();
+        table.jsonb('document_metadata').nullable();
         table.timestamps(true, true);
     });
 }
