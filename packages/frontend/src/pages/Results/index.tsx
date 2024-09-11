@@ -51,6 +51,7 @@ export default function Results() {
     sdgList: any[];
     affinityObj: any;
   }>();
+  const [documentName, setDocumentName] = useState("");
 
   function formatResults(results) {
     const affinity = results;
@@ -78,15 +79,19 @@ export default function Results() {
       name: "sdg",
       children: sortedAffinity,
     };
+
     return { sdgList, affinityObj };
   }
 
   useEffect(() => {
     async function loadResults() {
       try {
-        const { analysisId, analysisResults, documentMetadata } =
+        const { documentName, analysisId, analysisResults, documentMetadata } =
           await apiService.fetchResults(uuid as UUID);
         const formattedResults = formatResults(analysisResults);
+        console.log(documentName);
+        setDocumentName(documentName);
+
         setFormattedResults(formattedResults);
       } catch (e) {
         console.error("Error fetching data:", e);
@@ -101,7 +106,7 @@ export default function Results() {
         <Link to="/">Scan another document</Link>
       </div>
       <div className="heading">
-        <h2>Mi documento</h2>
+        <h2>{documentName}</h2>
       </div>
       <div className="results">
         <div className="first-row">
@@ -117,11 +122,6 @@ export default function Results() {
           <div className="sdg-chart">
             <h3>SDGs and targets detected</h3>
             {formattedResults && <Chart data={formattedResults.affinityObj} />}
-          </div>
-        </div>
-        <div className="second-row">
-          <div className="sdg-bars">
-            <h3>SDG percentages</h3>
           </div>
         </div>
       </div>

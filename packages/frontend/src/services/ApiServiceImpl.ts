@@ -57,6 +57,7 @@ export class ApiServiceImpl implements ApiService {
     const response = await fetch(`${this.apiUrl}/records/${id}`);
     const data = await response.json();
     return {
+      documentName: data.name,
       analysisId: data.analysis_id,
       analysisResults: data.analysis_results,
       documentMetadata: data.document_metadata,

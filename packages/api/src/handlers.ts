@@ -5,10 +5,10 @@ import { mailerService } from './services/mailer';
 import formidable from 'formidable';
 import upoService from './services/upo';
 
-async function waitAndNotify(analysisId: string, email: string) {
+async function waitAndNotify(uuid: UUID, analysisId: string, email: string) {
     const document_data = await upoService.pollApiForResult(analysisId);
-
-    await mailerService.sendResultLinkEmail(email, analysisId);
+    await dbService.updateRecord(uuid, { analysisResults: JSON.stringify(document_data) });
+    await mailerService.sendResultLinkEmail(uuid, email);
     return;
 }
 
@@ -44,8 +44,8 @@ async function postDocument(req: Request, res: Response) {
             if (!analysisId) {
                 return res.status(500).send('Error sending the file. No response');
             }
-            await dbService.updateRecord(uuid, { analysisId });
-            waitAndNotify(analysisId, email);
+            await dbService.updateRecord(uuid, { analysisId, name });
+            waitAndNotify(uuid, analysisId, email);
         } catch {
             return res.status(500).send('Error processing the request');
         }

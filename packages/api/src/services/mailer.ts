@@ -13,9 +13,9 @@ function sendVerificationEmail(email: string, token: string) {
     });
 }
 
-function sendResultLinkEmail(email: string, analysisId: string) {
+function sendResultLinkEmail(uuid: string, email: string) {
     const baseURL = process.env.FRONTEND_URL as string;
-    const url = `${baseURL}/results/${analysisId}` as string;
+    const url = `${baseURL}/results/${uuid}` as string;
     return transport.sendMail({
         from: process.env.MAIL_USER,
         to: email,

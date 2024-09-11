@@ -15,6 +15,7 @@ export type DocumentIndicator = {
 };
 
 export type Results = {
+  documentName: string;
   analysisId: UUID;
   analysisResults: DocumentIndicator[];
   documentMetadata: any;

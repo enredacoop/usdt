@@ -44,6 +44,7 @@ type UpdateRecordParams = {
     token?: string;
     verified?: boolean;
     analysisId?: string;
+    analysisResults?: any;
 };
 function updateRecord(id: UUID, params: UpdateRecordParams) {
     let prms = camelToSnake(params);
@@ -55,7 +56,7 @@ function deleteRecord(id: UUID) {
 }
 
 function getResults(id: UUID) {
-    return db('records').select(['analysis_id', 'analysis_results', 'document_metadata']).where({ id }).first();
+    return db('records').select(['name', 'analysis_id', 'analysis_results', 'document_metadata']).where({ id }).first();
 }
 
 const dbService = { getRecords, getRecord, getVerifiedRecord, createRecord, updateRecord, deleteRecord, getResults };
