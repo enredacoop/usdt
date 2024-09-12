@@ -12,6 +12,8 @@
     "dev:api": "npm run dev --workspace=api",
     "build:frontend": "npm run build --workspace=frontend",
     "build:api": "npm run build --workspace=api",
+    "serve:frontend": "npm run serve --workspace=frontend",
+    "serve:api": "npm run serve --workspace=api",
     "build": "npm run build:frontend && npm run build:api"
   },
   "workspaces": [
