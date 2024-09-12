@@ -5,7 +5,12 @@
   height: 6.5rem;
   width: 100%;
   background-color: $color-secondary-background;
-  padding: 0 2.25rem;
+  .content {
+    padding: 0 2.25rem;
+    margin: auto;
+    width: 100%;
+    max-width: $breakpoint-lg;
+  }
 
   a {
     @include nav-button();
@@ -18,6 +23,9 @@
   justify-content: center;
   margin: auto $layout-padding-x;
   border-bottom: 1px solid $color-neutral-300;
+  margin: auto;
+  width: 100%;
+  max-width: $breakpoint-lg;
   h2 {
     font: $font-heading-lg;
     color: $color-primary-brand;
@@ -47,8 +55,11 @@
 }
 
 .results {
-  margin: auto $layout-padding-x;
-  padding: 6rem 0;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: $breakpoint-lg;
+  margin: auto;
+  padding: 6rem $layout-padding-x;
 }
 
 /* Tablet */

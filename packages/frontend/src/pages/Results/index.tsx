@@ -103,7 +103,9 @@ export default function Results() {
   return (
     <>
       <div className="subheader">
-        <Link to="/">Scan another document</Link>
+        <div className="content">
+          <Link to="/">Scan another document</Link>
+        </div>
       </div>
       <div className="heading">
         <h2>{documentName}</h2>

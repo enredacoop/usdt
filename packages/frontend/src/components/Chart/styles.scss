@@ -1,0 +1,15 @@
+.info-notice {
+  display: flex;
+  flex-direction: row;
+  width: fit-content;
+  margin: auto;
+  margin-top: 2rem;
+  img {
+    margin-right: 0.5rem;
+  }
+  border: 1px solid $color-primary-brand;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  color: $color-primary-brand;
+  font: $font-text-sm;
+}

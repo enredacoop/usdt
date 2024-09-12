@@ -4,6 +4,8 @@
 import * as d3 from "d3";
 import { useEffect, useRef } from "react";
 import { SDG } from "./sdg";
+import info from "../../assets/img/info.svg";
+import "./styles.scss";
 
 function svg({ data }) {
   // Specify the chart’s dimensions.
@@ -191,9 +193,13 @@ function Chart({ data }) {
     }
   }, []);
   return (
-    <>
+    <div className="chart">
       <div ref={svgRef} />
-    </>
+      <div className="info-notice">
+        <img src={info} alt="info-icon" />
+        You can zoom in to view individual portions
+      </div>
+    </div>
   );
 }
 
