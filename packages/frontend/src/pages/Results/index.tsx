@@ -58,12 +58,22 @@ export default function Results() {
     let sortedAffinity: any[] = [];
     for (let sdg = 1; sdg <= 17; sdg++) {
       let sdgTargets = affinity
-        .filter((obj) => obj.id_target.startsWith(`${sdg.toString()}.`))
-        .map((t) => ({ name: t.id_target, value: t.affinity_value }));
-      sortedAffinity.push({
-        name: sdg.toString(),
-        children: [...sdgTargets],
-      });
+        .filter(
+          (obj) =>
+            obj.id_target.startsWith(`${sdg.toString()}.`) &&
+            obj.affinity_value > 0
+        )
+        .map((t) => {
+          return { name: t.id_target, value: t.affinity_value };
+        });
+      console.log("sdgTargets");
+      console.log(sdgTargets);
+
+      if (sdgTargets.length > 0)
+        sortedAffinity.push({
+          name: sdg.toString(),
+          children: [...sdgTargets],
+        });
     }
 
     console.log("sortedAffinity");
@@ -89,10 +99,10 @@ export default function Results() {
         const { documentName, analysisId, analysisResults, documentMetadata } =
           await apiService.fetchResults(uuid as UUID);
         const formattedResults = formatResults(analysisResults);
-        console.log(documentName);
         setDocumentName(documentName);
-
         setFormattedResults(formattedResults);
+        console.log("formattedResults");
+        console.log(formattedResults);
       } catch (e) {
         console.error("Error fetching data:", e);
       }

@@ -13,7 +13,7 @@ function sendVerificationEmail(email: string, token: string) {
     });
 }
 
-function sendResultLinkEmail(uuid: string, email: string) {
+function sendResultLinkEmail(uuid: string, name: string, email: string) {
     const baseURL = process.env.FRONTEND_URL as string;
     const url = `${baseURL}/results/${uuid}` as string;
     return transport.sendMail({
@@ -21,7 +21,7 @@ function sendResultLinkEmail(uuid: string, email: string) {
         to: email,
         subject: 'Results for your document are ready',
         html: `
-            <h3>Results for your document are ready</h3>
+            <p>Results for your document with name <i>${name}</i> are available.</p>
             <p>Follow this link to have an overview of your document</p>
             <p><a href="${url}" target="_blank">${url}</a></p>
         `
