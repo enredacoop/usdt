@@ -96,8 +96,9 @@ export default function Results() {
   useEffect(() => {
     async function loadResults() {
       try {
-        const { documentName, analysisId, analysisResults, documentMetadata } =
-          await apiService.fetchResults(uuid as UUID);
+        const { documentName, analysisResults } = await apiService.fetchResults(
+          uuid as UUID
+        );
         const formattedResults = formatResults(analysisResults);
         setDocumentName(documentName);
         setFormattedResults(formattedResults);
