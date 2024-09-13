@@ -8,8 +8,10 @@ export const ApiServiceContext = createContext<ApiService | undefined>(
 );
 
 export function ApiServiceProvider({ children }) {
-  const apiUrl = "/api";
-  console.log("apiUrl", apiUrl);
+  const apiUrl =
+    import.meta.env.MODE === "development"
+      ? "/api"
+      : import.meta.env.VITE_API_URL;
 
   const apiService: ApiService = new ApiServiceImpl(apiUrl);
   return (
