@@ -37,18 +37,18 @@ async function postDocument(req: Request, res: Response) {
 
         const clientIp = (req.headers['x-forwarded-for'] as string) || (req.connection.remoteAddress as string);
 
-        try {
-            const data = await upoService.sendDoc({ file: uploadedFile, ip: clientIp, email: email, metadata: {} });
-            const analysisId = data.requestID;
-            console.log('file uploaded');
-            if (!analysisId) {
-                return res.status(500).send('Error sending the file. No response');
-            }
-            await dbService.updateRecord(uuid, { analysisId, name });
-            waitAndNotify(uuid, name, analysisId, email);
-        } catch {
-            return res.status(500).send('Error processing the request');
+        // try {
+        const data = await upoService.sendDoc({ file: uploadedFile, ip: clientIp, email: email, metadata: {} });
+        const analysisId = data.requestID;
+        console.log('file uploaded');
+        if (!analysisId) {
+            return res.status(500).send('Error sending the file. No response');
         }
+        await dbService.updateRecord(uuid, { analysisId, name });
+        waitAndNotify(uuid, name, analysisId, email);
+        // } catch {
+        //     return res.status(500).send('Error processing the request');
+        // }
 
         console.log('fields', email + token + name + uuid);
 
