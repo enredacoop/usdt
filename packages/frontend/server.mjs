@@ -14,6 +14,6 @@ app.get("*", (req, res) => {
   res.sendFile(resolve(__dirname, "dist", "index.html"));
 });
 
-app.listen(3001, () => {
+app.listen(3002, () => {
   console.log("Server is running on port 3001");
 });

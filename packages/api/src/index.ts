@@ -19,6 +19,6 @@ app.use(bodyParser.json({ limit: '100mb' }));
 app.use(router);
 app.use('/documentation', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-app.listen(3000, () => {
+app.listen(3001, () => {
     console.log('Server listening on port 3000');
 });
