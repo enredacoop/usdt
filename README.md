@@ -2,14 +2,13 @@
 This repository contains the frontend of a web application built with React, designed to interact with the **Intelligent Target Locator API**, It allows to submit documents and visualize analysis results given by the API.
 
 ## Table of Contents
-[Description](#description)
-Features
-Installation
-Usage
-Configuration
-Technologies Used
-Contributing
-License
+- [Description](#description)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Configuration](#configuration)
+- [Technologies Used](#technologies-used)
+- [License](#license)
 
 ## Description
 The Intelligent Target Locator web application provides users with an interface to send PDF documents to be analysed by the Intelligent Target Locator API and get them evaluated in the context of the 17 Goals and 169 Targets from the 2030 Agenda. The site allows users to generate unique public URLs to visualize the results.
@@ -31,12 +30,12 @@ Ensure you have the following installed on your system:
 - npm
 - PostgreSQL (locally or in a docker container)
 
-## Clone the Repository
+### Clone the Repository
 ```bash
 git clone https://github.com/enredacoop/usdt.git
 ```
 
-## Install Dependencies
+### Install Dependencies
 ```bash
 npm install
 ```
