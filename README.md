@@ -69,8 +69,8 @@ This will create an optimized build of the app in the `frontend/dist` folder and
 ### Serve the application
 This is subject to individual preference. As a guide, use [PM2](https://pm2.keymetrics.io/) and start 2 processes:
 ```
-pm2 start "PORT=3000 npm run serve:frontend" --name "usdt_frontend"
-pm2 start "PORT=3001 npm run serve:api" --name "usdt_api"
+pm2 start "PORT=3000 npm run serve:api" --name "usdt_api"
+pm2 start "PORT=3001 npm run serve:frontend" --name "usdt_frontend"
 ```
 
 ## Configuration
