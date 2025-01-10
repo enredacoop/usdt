@@ -100,6 +100,17 @@ const getResults = async (req: Request, res: Response) => {
     }
 };
 
-const handlers = { sendVerificationEmail, verifyCode, postDocument, getResults };
+const downloadResultData = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    if (!id) return res.status(400).send('No id provided');
+    try {
+        const results = await dbService.getResults(id as UUID);
+        return res.status(200).send(results);
+    } catch (e) {
+        return res.sendStatus(500);
+    }
+};
+
+const handlers = { sendVerificationEmail, verifyCode, postDocument, getResults, downloadResultData };
 
 export default handlers;

@@ -4,14 +4,6 @@ import handlers from './handlers';
 
 const router = Router();
 
-router.get('/', (req, res) => {
-    res.send('Hello World!');
-});
-
-router.get('/docs', (req, res) => {
-    res.send('Yeah, docs!');
-});
-
 router.get('/records', async (req, res) => {
     await dbService.getRecords().then((records) => {
         res.send(records);
@@ -19,6 +11,10 @@ router.get('/records', async (req, res) => {
 });
 router.get('/records/:id', async (req, res) => {
     await handlers.getResults(req, res);
+});
+
+router.get('/records/:id/download', async (req, res) => {
+    await handlers.downloadResultData(req, res);
 });
 
 router.post('/send', async (req, res) => {

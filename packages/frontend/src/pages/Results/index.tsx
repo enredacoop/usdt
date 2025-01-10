@@ -23,6 +23,8 @@ import sdg17 from "../../assets/img/sdg/E-WEB-Goal-17.png";
 import { useEffect, useState } from "react";
 import { useApiService } from "../../hooks/useApiService";
 import { UUID } from "crypto";
+import Bars from "../../components/Bars";
+import BarsDouble from "../../components/BarsDouble";
 
 const sdgObj = {
   sdg1,
@@ -48,7 +50,7 @@ export default function Results() {
   const apiService = useApiService();
   const { uuid } = useParams();
   const [formattedResults, setFormattedResults] = useState<{
-    sdgList: any[];
+    sortedSdgList: any[];
     affinityObj: any;
   }>();
   const [documentName, setDocumentName] = useState("");
@@ -81,16 +83,20 @@ export default function Results() {
 
     let sdgList: any[] = [];
 
-    sortedAffinity.forEach((item) => sdgList.push(item.name));
+    sortedAffinity.forEach((item) => sdgList.push({name: item.name, value: (item.children.reduce((acc, curr) => acc + curr.value, 0))}));
 
     console.log(sdgList);
+    
+    let sortedSdgList = sdgList.sort((a, b) => b.value - a.value);
+    
+    console.log(sortedSdgList);
 
     const affinityObj = {
       name: "sdg",
       children: sortedAffinity,
     };
 
-    return { sdgList, affinityObj };
+    return { sortedSdgList, affinityObj };
   }
 
   useEffect(() => {
@@ -127,8 +133,11 @@ export default function Results() {
             <h3>SDG Detected</h3>
             <div className="sdg-grid__results">
               {formattedResults &&
-                formattedResults.sdgList.map((sdg) => {
-                  return <img key={sdg} src={sdgObj[`sdg${sdg}`]} />;
+                formattedResults.sortedSdgList.map((sdg) => {
+                  return <div key={sdg.name} className="sdg-grid__results__item">
+                    <img src={sdgObj[`sdg${sdg.name}`]} />
+                      <span>{`${sdg.value} %`}</span>
+                  </div>
                 })}
             </div>
           </div>
@@ -136,6 +145,10 @@ export default function Results() {
             <h3>SDGs and targets detected</h3>
             {formattedResults && <Chart data={formattedResults.affinityObj} />}
           </div>
+        </div>
+        <div className="second-row">
+            <Bars />
+            <BarsDouble />
         </div>
       </div>
     </>
