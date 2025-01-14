@@ -25,6 +25,7 @@ import { useApiService } from "../../hooks/useApiService";
 import { UUID } from "crypto";
 import Bars from "../../components/Bars";
 import BarsDouble from "../../components/BarsDouble";
+import { AbsoluteValue, AffinityValues, RelativeValue } from "../../services/ApiService";
 
 const sdgObj = {
   sdg1,
@@ -53,23 +54,22 @@ export default function Results() {
     sortedSdgList: any[];
     affinityObj: any;
   }>();
-  const [documentName, setDocumentName] = useState("");
-
-  function formatResults(results) {
-    const affinity = results;
+  const [relativeValues, setRelativeValues] = useState<RelativeValue[]>([]);
+  const [absoluteValues, setAbsoluteValues] = useState<AbsoluteValue[]>([]);
+  const [documentName, setDocumentName] = useState("");  
+  
+  function formatAffinityValues(affinityValues: AffinityValues[]) {
     let sortedAffinity: any[] = [];
     for (let sdg = 1; sdg <= 17; sdg++) {
-      let sdgTargets = affinity
+      let sdgTargets = affinityValues
         .filter(
           (obj) =>
-            obj.id_target.startsWith(`${sdg.toString()}.`) &&
-            obj.affinity_value > 0
+            obj.name.startsWith(`${sdg.toString()}.`) &&
+            obj.value > 0
         )
         .map((t) => {
-          return { name: t.id_target, value: t.affinity_value };
+          return { name: t.name, value: t.value };
         });
-      console.log("sdgTargets");
-      console.log(sdgTargets);
 
       if (sdgTargets.length > 0)
         sortedAffinity.push({
@@ -78,18 +78,11 @@ export default function Results() {
         });
     }
 
-    console.log("sortedAffinity");
-    console.log(sortedAffinity);
-
     let sdgList: any[] = [];
 
-    sortedAffinity.forEach((item) => sdgList.push({name: item.name, value: (item.children.reduce((acc, curr) => acc + curr.value, 0))}));
+    sortedAffinity.forEach((item) => sdgList.push({name: item.name, value: (item.children.reduce((acc, curr) => parseFloat((acc + curr.value).toFixed(2)), 0))}));
 
-    console.log(sdgList);
-    
     let sortedSdgList = sdgList.sort((a, b) => b.value - a.value);
-    
-    console.log(sortedSdgList);
 
     const affinityObj = {
       name: "sdg",
@@ -102,14 +95,15 @@ export default function Results() {
   useEffect(() => {
     async function loadResults() {
       try {
-        const { documentName, analysisResults } = await apiService.fetchResults(
+        const { documentName, affinityValues, relativeValues, absoluteValues } = await apiService.fetchResults(
           uuid as UUID
         );
-        const formattedResults = formatResults(analysisResults);
+        
+        const formattedResults = formatAffinityValues(affinityValues);
         setDocumentName(documentName);
         setFormattedResults(formattedResults);
-        console.log("formattedResults");
-        console.log(formattedResults);
+        setRelativeValues(relativeValues);
+        setAbsoluteValues(absoluteValues);
       } catch (e) {
         console.error("Error fetching data:", e);
       }
@@ -147,8 +141,8 @@ export default function Results() {
           </div>
         </div>
         <div className="second-row">
-            <Bars />
-            <BarsDouble />
+            <Bars data={relativeValues} />
+            <BarsDouble data={absoluteValues} />
         </div>
       </div>
     </>

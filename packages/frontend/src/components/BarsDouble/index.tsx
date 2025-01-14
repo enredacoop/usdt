@@ -1,6 +1,5 @@
 import * as d3 from "d3";
 import { useEffect, useRef } from "react";
-import {data as alphabeth} from "./data";
 
 interface DataItem {
   name: string;
@@ -74,21 +73,16 @@ function svg({ data }: { data: DataItem[] }) {
 }
 
 
-function BarsDouble() {
+function BarsDouble({data}) {
   const divRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     if (divRef.current) {
-      const data = alphabeth.document_affinities.map(item => ({
-        name: item.id_target,
-        reference: item.reference_affinity_value,
-        value: item.absolute_affinity_value
-      }));
       const svgNode = svg({ data });
       if (svgNode) {
         divRef.current.appendChild(svgNode);
       }
     }
-  }, []);
+  });
   return (
     <div className="chart">
       <div ref={divRef} />

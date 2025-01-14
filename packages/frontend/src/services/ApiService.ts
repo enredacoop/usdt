@@ -8,17 +8,27 @@ export type VerifyCodeData = {
   email: string;
   token: string;
 };
-
-export type DocumentIndicator = {
-  affinity_value: number;
-  id_target: string;
+export type AffinityValues = {
+  name: string;
+  value: number;
 };
+export type RelativeValue= {
+  name: string;
+  value: number;
+}
+export type AbsoluteValue = {
+  name: string;
+  value: number;
+  reference: number;
+}
 
 export type Results = {
   documentName: string;
   analysisId: UUID;
-  analysisResults: DocumentIndicator[];
-  documentMetadata: any;
+  affinityValues: AffinityValues[];
+  relativeValues: RelativeValue[];
+  absoluteValues: AbsoluteValue[];
+  documentMetadata: unknown;
 };
 
 export interface ApiService {
