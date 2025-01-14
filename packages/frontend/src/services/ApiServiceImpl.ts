@@ -56,10 +56,33 @@ export class ApiServiceImpl implements ApiService {
   async fetchResults(id: UUID): Promise<Results> {
     const response = await fetch(`${this.apiUrl}/records/${id}`);
     const data = await response.json();
+    
+    function mapAffinityValues(list) {
+      return list.map((item) => ({
+        name: item.id_target,
+        value: item.affinity_value,
+      }));
+    }
+  
+    function mapRelativeValues(list) {
+      return list.map((item) => ({
+        name: item.id_target,
+        value: item.relative_affinity_value,
+      }));
+    }
+    function mapAbsoluteValues(list) {
+      return list.map((item) => ({
+        name: item.id_target,
+        value: item.absolute_affinity_value,
+        reference: item.reference_affinity_value,
+      }));
+    }
     return {
       documentName: data.name,
       analysisId: data.analysis_id,
-      analysisResults: data.analysis_results,
+      affinityValues: mapAffinityValues(data.analysis_results),
+      relativeValues: mapRelativeValues(data.analysis_results),
+      absoluteValues: mapAbsoluteValues(data.analysis_results),
       documentMetadata: data.document_metadata,
     };
   }
