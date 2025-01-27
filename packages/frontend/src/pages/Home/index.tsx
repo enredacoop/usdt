@@ -1,7 +1,7 @@
 import Form from "../../components/Form";
 import "./styles.scss";
 import itlImg from "../../assets/img/ITL-hero.svg";
-import amicoImg from "../../assets/img/amico.svg";
+// import amicoImg from "../../assets/img/amico.svg";
 import upoImg from "../../assets/img/upo.png";
 import vilniausImg from "../../assets/img/vilniaus.jpeg";
 import savoniaImg from "../../assets/img/savonia.png";
@@ -37,7 +37,6 @@ export default function Home() {
       <div className="infosection">
         <h2>What is Intelligent Target Locator?</h2>
         <div className="infosection__block">
-          <img className="infosection__image" src={amicoImg} alt="" />
           <div className="infosection__content">
             <p>
             The &quot;Intelligent Target Locator: AI {2030}&quot; (ITL) is a data analytics tool
@@ -62,6 +61,7 @@ SDG targets..
             <h3>How to use?</h3>
             <p>
             <strong>Provide the Information</strong>
+            </p>
             <ol>
               <li>Specify the location on your computer where the document you want
               to analyze is stored.</li>
@@ -72,18 +72,21 @@ SDG targets..
               <li>Accept the terms and conditions of use.</li>
               <li>Click the ”Send&quot; button.</li>
             </ol>
+            <p>
             <strong>Confirm Your Email</strong>
+            </p>
             <ol>
               <li>You will need to confirm the email address provided by entering the
               verification code sent to that same email address.</li>
               <li>Click &quot;Verify.&quot;</li>
             </ol>
+            <p>
             <strong>Receive the Results</strong>
+            </p>
             <ol>
               <li>You will receive an email with a link to the results</li>
               <li>Click on the link and you will see the results and download them.</li>
             </ol>
-            </p>
             <h3>What results does it return?</h3>
             <p>
            <strong>Affinity</strong> is a numerical measure that quantifies the relationship between a text
@@ -98,6 +101,7 @@ value to be reached.
             <p>
             Thus, ITL provides three affinity values for the document with respect to each
 target:
+            </p> 
             <ul>
               <li>
               <strong>Absolute Affinity Value</strong>: The affinity value calculated by the tool for the
@@ -112,23 +116,22 @@ affinity of the text with the specific target.
 target. In other words, it identifies which targets are most related to the
 document, regardless of the magnitude of the relationship.</li>
             </ul>
-            </p> 
             <h3>Downloading numerical results</h3>
             <p>
             The tool provides two options to download the numerical results of the analysis:
-              <ul>
+            </p> 
+            <ul>
                 <li>
                 Document Affinity: Returns a file (CSV) with the affinity values of the whole
                 document for each target.
                 </li>
-              </ul>
-              <img className="infosection__descriptionImage" src={table1} alt="Affinity values per target" />
-              <ul><li>
+            </ul>
+            <img className="infosection__descriptionImage" src={table1} alt="Affinity values per target" />
+            <ul><li>
               Affinity Table: Returns a file (CSV) with all the absolute affinity values for each
               goal and target for every sentence in the document.
-              </li></ul>
-              <img className="infosection__descriptionImage" src={table2} alt="Affinity values per target" />
-            </p>
+            </li></ul>
+            <img className="infosection__descriptionImage" src={table2} alt="Affinity values per target" />
           </div>
         </div>
       </div>

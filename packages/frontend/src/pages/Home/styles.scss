@@ -50,6 +50,8 @@
 
 .infosection {
   @include home-section();
+  max-width: 80rem;
+  margin: auto;
   &__block {
     display: flex;
     flex-direction: row;
@@ -67,14 +69,15 @@
     height: 100%;
     object-fit: contain;
   }
-  & p {
+  & p,
+  & ol,
+  & ul {
     width: 100%;
     font: $font-text-md;
     margin-bottom: 2rem;
   }
   & ol,
   & ul {
-    margin-top: 0.5rem;
     & li {
       margin-left: 2rem;
       margin-bottom: 0.5rem;
@@ -107,4 +110,29 @@
       object-fit: contain;
     }
   }
+}
+
+@media screen and (max-width: 768px) {
+.herosection {
+  &__title {
+    padding-right: 0;
+  }
+  &__img {
+    display: none;
+  }
+  &__block {
+    width: 100%;
+  }
+  &__wrapper {
+    flex-direction: column;
+  }
+  &__form {
+    justify-content: center;
+  }
+}
+.partnerssection {
+  &__block {
+    flex-direction: column;
+  }
+}
 }
