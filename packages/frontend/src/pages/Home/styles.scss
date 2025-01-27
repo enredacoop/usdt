@@ -55,18 +55,41 @@
     flex-direction: row;
     max-width: $breakpoint-lg;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     gap: 4rem;
   }
-  & img {
+  &__image {
     width: auto;
     height: 24.5rem;
+  }
+  &__descriptionImage {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
   }
   & p {
     width: 100%;
     font: $font-text-md;
     margin-bottom: 2rem;
   }
+  & ol,
+  & ul {
+    margin-top: 0.5rem;
+    & li {
+      margin-left: 2rem;
+      margin-bottom: 0.5rem;
+      & img {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+    }
+  }
+  & h3 {
+    font: $font-heading-md;
+    color: $color-primary-brand;
+    margin-bottom: 1rem;
+  }
+  
 }
 
 .partnerssection {
