@@ -9,7 +9,7 @@ $breakpoint-md: 1024px;
 $breakpoint-lg: 1920px;
 
 //  Colors
-$color-primary-brand: #00268a;
+$color-primary-brand: #3b5f87;
 $color-primary-footer: #e8eef4;
 $color-button-fill-hover: #445fa7;
 $color-secondary-background: #c6f0ff;
@@ -27,51 +27,49 @@ $color-neutral-800: #424242;
 $color-neutral-900: #212121;
 
 @font-face {
-  font-family: "Brygada1918";
-  src: url("@/assets/fonts/Brygada1918/Brygada1918-VariableFont_wght.woff2")
-    format("woff2");
+  font-family: "Open Sans";
+  src: url("@/assets/fonts/Open_Sans/OpenSans-VariableFont_wdth,wght.ttf");
   font-weight: 400 700;
   font-display: swap;
 }
 @font-face {
-  font-family: "DM Sans";
-  src: url("@/assets/fonts/DM_Sans/DMSans-VariableFont_opsz_wght.woff2")
-    format("woff2");
+  font-family: "Open";
+  src: url("@/assets/fonts/Open_Sans/OpenSans-VariableFont_wdth,wght.ttf");
   font-weight: 100 900;
   font-display: swap;
 }
 
 $font-heading-xl:
-  700 2.5rem / normal "Brygada1918",
+  700 2.5rem / normal "Open Sans",
   sans-serif;
 $font-heading-lg:
-  700 2.25rem / normal "Brygada1918",
+  700 2.25rem / normal "Open Sans",
   sans-serif;
 $font-heading-md:
-  700 1.625rem / normal "Brygada1918",
+  700 1.625rem / normal "Open Sans",
   sans-serif;
 $font-heading-sm:
-  600 1.25rem / normal "Brygada1918",
+  600 1.25rem / normal "Open Sans",
   sans-serif;
 $font-heading-sm-2:
-  700 1.25rem / normal "DM Sans",
+  700 1.25rem / normal "Open",
   sans-serif;
 
 $font-text-lg:
-  400 1.125rem / normal "DM Sans",
+  400 1.125rem / normal "Open",
   serif;
 $font-text-md:
-  400 1rem / 1.5rem "DM Sans",
+  400 1rem / 1.5rem "Open",
   sans-serif;
 $font-text-sm:
-  400 0.875rem / normal "DM Sans",
+  400 0.875rem / normal "Open",
   sans-serif;
 $font-text-label:
-  400 0.75rem / normal "DM Sans",
+  400 0.75rem / normal "Open",
   sans-serif;
 
 $font-text-button:
-  700 1rem / 1.5rem "DM Sans",
+  700 1rem / 1.5rem "Open",
   sans-serif;
 
 $layout-padding-x: 6rem;
