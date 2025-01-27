@@ -20,14 +20,17 @@
   }
 }
 
-h4 {
-  font: $font-text-lg;
-  text-align: center;
+.form {
+  h4 {
+    font: $font-text-lg;
+    text-align: center;
+  }
+  p {
+    font: $font-text-sm;
+    color: $color-neutral-700;
+  }
 }
-p {
-  font: $font-text-sm;
-  color: $color-neutral-700;
-}
+
 
 .form {
   width: 31.375rem;
