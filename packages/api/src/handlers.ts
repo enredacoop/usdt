@@ -92,7 +92,7 @@ const getResults = async (req: Request, res: Response) => {
         const results = await dbService.getResults(id as UUID);
         return res.status(200).send(results);
     } catch (e) {
-        return res.sendStatus(500);
+        return res.sendStatus(404);
     }
 };
 
