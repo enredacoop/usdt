@@ -4,11 +4,6 @@ import handlers from './handlers';
 
 const router = Router();
 
-router.get('/records', async (req, res) => {
-    await dbService.getRecords().then((records) => {
-        res.send(records);
-    });
-});
 router.get('/records/:id', async (req, res) => {
     await handlers.getResults(req, res);
 });
