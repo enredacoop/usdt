@@ -12,15 +12,15 @@ export type AffinityValues = {
   name: string;
   value: number;
 };
-export type RelativeValue= {
+export type RelativeValue = {
   name: string;
   value: number;
-}
+};
 export type AbsoluteValue = {
   name: string;
   value: number;
   reference: number;
-}
+};
 
 export type Results = {
   documentName: string;
@@ -37,4 +37,5 @@ export interface ApiService {
   verifyCode(data: VerifyCodeData): Promise<void>;
   postDocument(data: FormData, signal: AbortSignal): Promise<void>;
   fetchResults(id: UUID): Promise<Results>;
+  canUserSend(email: string): Promise<boolean>;
 }

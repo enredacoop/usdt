@@ -34,7 +34,7 @@ type CreateRecordParams = {
 };
 function createRecord(params: CreateRecordParams) {
     const now = new Date();
-    const expiresAt = new Date(now.getTime() + 1000 * 60 * 60 * 24);
+    const expiresAt = new Date(now.getTime() + 1000 * 60 * 60); // 1 hour
     return db('records').insert({ ...params, token_expires_at: expiresAt });
 }
 
@@ -59,6 +59,23 @@ function getResults(id: UUID) {
     return db('records').select(['name', 'analysis_id', 'analysis_results', 'document_metadata']).where({ id }).first();
 }
 
-const dbService = { getRecords, getRecord, getVerifiedRecord, createRecord, updateRecord, deleteRecord, getResults };
+function getPendingUserRecord(email: string) {
+    return db('records')
+        .select('token_expires_at')
+        .where({ email, verified: true, analysis_results: null })
+        .orderBy('created_at', 'desc')
+        .first();
+}
+
+const dbService = {
+    getRecords,
+    getRecord,
+    getVerifiedRecord,
+    createRecord,
+    updateRecord,
+    deleteRecord,
+    getResults,
+    getPendingUserRecord
+};
 
 export default dbService;

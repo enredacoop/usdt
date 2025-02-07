@@ -28,5 +28,8 @@ router.post('/verify', async (req, res) => {
 router.post('/doc', async (req, res) => {
     await handlers.postDocument(req, res);
 });
+router.get('/check-authorization/:email', async (req, res) => {
+    await handlers.checkAuthorization(req, res);
+});
 
 export default router;

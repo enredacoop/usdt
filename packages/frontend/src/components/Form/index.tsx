@@ -59,6 +59,14 @@ const Form = () => {
     setFormData(formData);
 
     try {
+      const canSend = await apiService.canUserSend(email);
+      console.log("Can send", canSend);
+      if (!canSend) {
+        alert(
+          "You have already sent a document. Please wait for the results before sending another."
+        );
+        return;
+      }
       const { uuid } = await apiService.sendVerification({ email });
       console.log("Send verification");
       console.log(uuid);

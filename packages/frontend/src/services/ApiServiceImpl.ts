@@ -18,6 +18,11 @@ export class ApiServiceImpl implements ApiService {
     return response.json();
   }
 
+  async canUserSend(email: string): Promise<boolean> {
+    const response = await fetch(`${this.apiUrl}/check-authorization/${email}`);
+    return response.status === 200 ? true : false;
+  }
+
   async sendVerification(
     data: SendVerificationData
   ): Promise<{ uuid: string }> {
@@ -56,14 +61,14 @@ export class ApiServiceImpl implements ApiService {
   async fetchResults(id: UUID): Promise<Results> {
     const response = await fetch(`${this.apiUrl}/records/${id}`);
     const data = await response.json();
-    
+
     function mapAffinityValues(list) {
       return list.map((item) => ({
         name: item.id_target,
         value: item.affinity_value,
       }));
     }
-  
+
     function mapRelativeValues(list) {
       return list.map((item) => ({
         name: item.id_target,

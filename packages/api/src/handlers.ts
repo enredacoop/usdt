@@ -37,7 +37,6 @@ async function postDocument(req: Request, res: Response) {
 
         const clientIp = (req.headers['x-forwarded-for'] as string) || (req.connection.remoteAddress as string);
 
-        // try {
         const data = await upoService.sendDoc({ file: uploadedFile, ip: clientIp, email: email, metadata: {} });
         const analysisId = data.requestID;
         console.log('file uploaded');
@@ -46,9 +45,6 @@ async function postDocument(req: Request, res: Response) {
         }
         await dbService.updateRecord(uuid, { analysisId, name });
         waitAndNotify(uuid, name, analysisId, email);
-        // } catch {
-        //     return res.status(500).send('Error processing the request');
-        // }
 
         console.log('fields', email + token + name + uuid);
 
@@ -111,6 +107,32 @@ const downloadResultData = async (req: Request, res: Response) => {
     }
 };
 
-const handlers = { sendVerificationEmail, verifyCode, postDocument, getResults, downloadResultData };
+const checkAuthorization = async (req: Request, res: Response) => {
+    const { email } = req.params;
+    console.log(email);
+
+    const allowed_emails = process.env.ALLOWED_EMAILS?.split(',');
+    if (allowed_emails?.includes(email)) {
+        return res.status(200).send('Authorized');
+    }
+
+    const record = await dbService.getPendingUserRecord(email);
+    console.log(record);
+
+    let now = new Date();
+    if (record && record.token_expires_at > now) {
+        return res.status(403).send('Unauthorized');
+    }
+    return res.status(200).send('Authorized');
+};
+
+const handlers = {
+    sendVerificationEmail,
+    verifyCode,
+    postDocument,
+    getResults,
+    downloadResultData,
+    checkAuthorization
+};
 
 export default handlers;
