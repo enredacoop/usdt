@@ -105,8 +105,8 @@ export default function Results() {
   }
 
   const downloadData = async (e) => {
-    setIsLoadingData(true);
     e.preventDefault();
+    setIsLoadingData(true);
     await apiService.downloadData(uuid as UUID);
     setIsLoadingData(false);
     return;
