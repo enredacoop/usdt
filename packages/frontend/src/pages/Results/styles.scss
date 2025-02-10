@@ -5,22 +5,26 @@
   height: 6.5rem;
   width: 100%;
   background-color: $color-secondary-background;
-  .back {
+  .buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     padding: 0 2.25rem;
     margin: auto;
     width: 100%;
     max-width: $breakpoint-lg;
-  }
-  .download {
-    padding: 0 2.25rem;
-    margin: auto;
-    width: 100%;
-    max-width: $breakpoint-lg;
-    text-align: right;
-  }
-
-  a {
-    @include nav-button();
+    a {
+      display: inline-flex;
+      @include nav-button();
+      justify-content: center;
+      white-space: nowrap;
+      min-width: 14rem;
+    }
+    a svg {
+      width: 1rem;
+      height: auto;
+      margin: auto;
+    }
   }
 }
 .heading {
@@ -128,10 +132,8 @@
 /* Tablet */
 @media screen and (max-width: 768px) {
   .subheader {
-    flex-direction: column;
-    .back,
-    .download {
-      text-align: center;
+    .buttons {
+      flex-direction: column;
     }
   }
   h3 {

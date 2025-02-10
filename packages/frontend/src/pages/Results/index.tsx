@@ -30,6 +30,7 @@ import {
   AffinityValues,
   RelativeValue,
 } from "../../services/ApiService";
+import Loader from "../../components/Loader";
 
 const sdgObj = {
   sdg1,
@@ -61,6 +62,7 @@ export default function Results() {
   const [relativeValues, setRelativeValues] = useState<RelativeValue[]>([]);
   const [absoluteValues, setAbsoluteValues] = useState<AbsoluteValue[]>([]);
   const [documentName, setDocumentName] = useState("");
+  const [isLoadingData, setIsLoadingData] = useState(false);
 
   function formatAffinityValues(affinityValues: AffinityValues[]) {
     let sortedAffinity: any[] = [];
@@ -103,8 +105,11 @@ export default function Results() {
   }
 
   const downloadData = async (e) => {
+    setIsLoadingData(true);
     e.preventDefault();
     await apiService.downloadData(uuid as UUID);
+    setIsLoadingData(false);
+    return;
   };
 
   useEffect(() => {
@@ -128,17 +133,15 @@ export default function Results() {
   return (
     <>
       <div className="subheader">
-        <div className="back">
+        <div className="buttons">
           <Link to="/">Scan another document</Link>
-        </div>
-        <div className="download">
           <Link
             onClick={(e) => {
               downloadData(e);
             }}
             to={""}
           >
-            Download CSV data
+            {isLoadingData ? <Loader /> : "Download CSV data"}
           </Link>
         </div>
       </div>
