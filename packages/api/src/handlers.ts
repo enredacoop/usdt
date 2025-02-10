@@ -4,6 +4,10 @@ import dbService from './services/db';
 import { mailerService } from './services/mailer';
 import formidable from 'formidable';
 import upoService from './services/upo';
+import { finished, pipeline, Readable } from 'stream';
+
+const API_URL = process.env.UPO_API as string;
+const TOKEN = process.env.UPO_TOKEN as string;
 
 async function waitAndNotify(uuid: UUID, name: string, analysisId: string, email: string) {
     const document_data = await upoService.pollApiForResult(analysisId);
@@ -126,13 +130,32 @@ const checkAuthorization = async (req: Request, res: Response) => {
     return res.status(200).send('Authorized');
 };
 
+const downloadCSVDocs = async (req: Request, res: Response) => {
+    const { id } = req.params as { id: UUID };
+    if (!id) return res.status(400).send('No id provided');
+    try {
+        const { analysis_id } = await dbService.getResults(id);
+        const zip = await upoService.downloadCSVDocs(analysis_id);
+        // Set response headers for file download
+        res.setHeader('Content-Disposition', 'attachment; filename="data.zip"');
+        res.setHeader('Content-Type', 'application/zip');
+        // Stream the file to the client
+        // Pipe the response stream directly to the client
+        zip.pipe(res);
+        // return res.status(200).send(results);
+    } catch (e) {
+        return res.sendStatus(500);
+    }
+};
+
 const handlers = {
     sendVerificationEmail,
     verifyCode,
     postDocument,
     getResults,
     downloadResultData,
-    checkAuthorization
+    checkAuthorization,
+    downloadCSVDocs
 };
 
 export default handlers;

@@ -91,4 +91,19 @@ export class ApiServiceImpl implements ApiService {
       documentMetadata: data.document_metadata,
     };
   }
+
+  async downloadData(id: UUID): Promise<void> {
+    console.log(id);
+
+    const response = await fetch(`${this.apiUrl}/csv_files/${id}`);
+    console.log(response);
+    const blob = await response.blob();
+    console.log(blob);
+
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.click();
+    window.URL.revokeObjectURL(url);
+  }
 }

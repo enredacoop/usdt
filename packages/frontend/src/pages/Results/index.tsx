@@ -25,7 +25,11 @@ import { useApiService } from "../../hooks/useApiService";
 import { UUID } from "crypto";
 import Bars from "../../components/Bars";
 import BarsDouble from "../../components/BarsDouble";
-import { AbsoluteValue, AffinityValues, RelativeValue } from "../../services/ApiService";
+import {
+  AbsoluteValue,
+  AffinityValues,
+  RelativeValue,
+} from "../../services/ApiService";
 
 const sdgObj = {
   sdg1,
@@ -56,16 +60,14 @@ export default function Results() {
   }>();
   const [relativeValues, setRelativeValues] = useState<RelativeValue[]>([]);
   const [absoluteValues, setAbsoluteValues] = useState<AbsoluteValue[]>([]);
-  const [documentName, setDocumentName] = useState("");  
-  
+  const [documentName, setDocumentName] = useState("");
+
   function formatAffinityValues(affinityValues: AffinityValues[]) {
     let sortedAffinity: any[] = [];
     for (let sdg = 1; sdg <= 17; sdg++) {
       let sdgTargets = affinityValues
         .filter(
-          (obj) =>
-            obj.name.startsWith(`${sdg.toString()}.`) &&
-            obj.value > 0
+          (obj) => obj.name.startsWith(`${sdg.toString()}.`) && obj.value > 0
         )
         .map((t) => {
           return { name: t.name, value: t.value };
@@ -80,7 +82,15 @@ export default function Results() {
 
     let sdgList: any[] = [];
 
-    sortedAffinity.forEach((item) => sdgList.push({name: item.name, value: (item.children.reduce((acc, curr) => parseFloat((acc + curr.value).toFixed(2)), 0))}));
+    sortedAffinity.forEach((item) =>
+      sdgList.push({
+        name: item.name,
+        value: item.children.reduce(
+          (acc, curr) => parseFloat((acc + curr.value).toFixed(2)),
+          0
+        ),
+      })
+    );
 
     let sortedSdgList = sdgList.sort((a, b) => b.value - a.value);
 
@@ -92,13 +102,17 @@ export default function Results() {
     return { sortedSdgList, affinityObj };
   }
 
+  const downloadData = async (e) => {
+    e.preventDefault();
+    await apiService.downloadData(uuid as UUID);
+  };
+
   useEffect(() => {
     async function loadResults() {
       try {
-        const { documentName, affinityValues, relativeValues, absoluteValues } = await apiService.fetchResults(
-          uuid as UUID
-        );
-        
+        const { documentName, affinityValues, relativeValues, absoluteValues } =
+          await apiService.fetchResults(uuid as UUID);
+
         const formattedResults = formatAffinityValues(affinityValues);
         setDocumentName(documentName);
         setFormattedResults(formattedResults);
@@ -114,8 +128,18 @@ export default function Results() {
   return (
     <>
       <div className="subheader">
-        <div className="content">
+        <div className="back">
           <Link to="/">Scan another document</Link>
+        </div>
+        <div className="download">
+          <Link
+            onClick={(e) => {
+              downloadData(e);
+            }}
+            to={""}
+          >
+            Download CSV data
+          </Link>
         </div>
       </div>
       <div className="heading">
@@ -128,10 +152,12 @@ export default function Results() {
             <div className="sdg-grid__results">
               {formattedResults &&
                 formattedResults.sortedSdgList.map((sdg) => {
-                  return <div key={sdg.name} className="sdg-grid__results__item">
-                    <img src={sdgObj[`sdg${sdg.name}`]} />
+                  return (
+                    <div key={sdg.name} className="sdg-grid__results__item">
+                      <img src={sdgObj[`sdg${sdg.name}`]} />
                       <span>{`${sdg.value} %`}</span>
-                  </div>
+                    </div>
+                  );
                 })}
             </div>
           </div>
@@ -141,8 +167,8 @@ export default function Results() {
           </div>
         </div>
         <div className="second-row">
-            <Bars data={relativeValues} />
-            <BarsDouble data={absoluteValues} />
+          <Bars data={relativeValues} />
+          <BarsDouble data={absoluteValues} />
         </div>
       </div>
     </>

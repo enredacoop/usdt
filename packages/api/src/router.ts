@@ -26,5 +26,8 @@ router.post('/doc', async (req, res) => {
 router.get('/check-authorization/:email', async (req, res) => {
     await handlers.checkAuthorization(req, res);
 });
+router.get('/csv_files/:id', async (req, res) => {
+    await handlers.downloadCSVDocs(req, res);
+});
 
 export default router;

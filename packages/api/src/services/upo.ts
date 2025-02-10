@@ -1,4 +1,6 @@
 import fs from 'fs';
+import archiver from 'archiver';
+import { Readable } from 'stream';
 
 const API_URL = process.env.UPO_API as string;
 const TOKEN = process.env.UPO_TOKEN as string;
@@ -115,6 +117,36 @@ async function pollApiForResult(analysisId: string, interval = 30000, timeout = 
     });
 }
 
-const upoService = { sendDoc, pollApiForResult };
+const downloadCSVDocs = async (analysisId: string) => {
+    const params = {
+        id_request: analysisId,
+        ip: '1.1.1.1'
+    };
+    const queryString = new URLSearchParams(params).toString();
+    const urls = [
+        `${API_URL}/get_affinity_table_csv?${queryString}`,
+        `${API_URL}/get_document_affinities_csv?${queryString}` // Segundo endpoint
+    ];
+
+    const zip = archiver('zip', { zlib: { level: 9 } });
+
+    const fetchPromises = urls.map(async (url, index) => {
+        const response = await fetch(url, { headers: { 'x-api-key': TOKEN } });
+
+        if (!response.ok) {
+            throw new Error(`Error al descargar CSV ${index + 1}: ${response.status}`);
+        }
+
+        const fileStream = Readable.from(await response.text());
+        zip.append(fileStream, { name: `document_${index + 1}.csv` });
+    });
+
+    await Promise.all(fetchPromises);
+    zip.finalize();
+
+    return zip;
+};
+
+const upoService = { sendDoc, pollApiForResult, downloadCSVDocs };
 
 export default upoService;

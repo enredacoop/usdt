@@ -1,15 +1,22 @@
 .subheader {
   display: flex;
-  justify-content: start;
+  justify-content: space;
   align-items: center;
   height: 6.5rem;
   width: 100%;
   background-color: $color-secondary-background;
-  .content {
+  .back {
     padding: 0 2.25rem;
     margin: auto;
     width: 100%;
     max-width: $breakpoint-lg;
+  }
+  .download {
+    padding: 0 2.25rem;
+    margin: auto;
+    width: 100%;
+    max-width: $breakpoint-lg;
+    text-align: right;
   }
 
   a {
@@ -55,7 +62,6 @@
   padding: 6rem $layout-padding-x;
 }
 
-
 .first-row,
 .second-row {
   width: 100%;
@@ -72,7 +78,6 @@
 .second-row {
   gap: 3rem;
 }
-
 
 .sdg-grid,
 .sdg-chart {
@@ -122,6 +127,13 @@
 
 /* Tablet */
 @media screen and (max-width: 768px) {
+  .subheader {
+    flex-direction: column;
+    .back,
+    .download {
+      text-align: center;
+    }
+  }
   h3 {
     margin-bottom: 3rem;
   }

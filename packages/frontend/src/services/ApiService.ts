@@ -38,4 +38,5 @@ export interface ApiService {
   postDocument(data: FormData, signal: AbortSignal): Promise<void>;
   fetchResults(id: UUID): Promise<Results>;
   canUserSend(email: string): Promise<boolean>;
+  downloadData(id: UUID): Promise<void>;
 }
